@@ -1,12 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    >
-<TextView  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"
-    />
-</LinearLayout>
+    android:background="#dadada">
+    <RelativeLayout 
+	    android:id = "@+id/layout_top"
+	    android:layout_width="fill_parent"
+		android:layout_height="40dp"
+		android:background="@drawable/top_background">    
+    </RelativeLayout>
+	<RelativeLayout 
+		android:id="@+id/layout_tabs_holder_background"
+		android:layout_width="fill_parent"
+		android:layout_height="51dp"
+		android:layout_below="@id/layout_top"
+		android:background="@drawable/tabs_holder_background">
+	</RelativeLayout>    
+    <RelativeLayout 
+    	android:id = "@+id/layout_tabs_holder"
+    	android:layout_width="fill_parent"
+		android:layout_height="60dp"
+		android:layout_marginLeft="5dp"			
+		android:layout_below="@id/layout_top"> 
+    	<RelativeLayout 
+    		android:id = "@+id/tab_1"
+    		android:layout_width="70dp"
+    		android:layout_height="60dp"
+    		android:layout_alignParentTop="true"
+    		android:layout_alignParentLeft="true"
+    		android:clickable="true"
+    		android:background="@drawable/tab_background">    	
+    	</RelativeLayout>
+    	<RelativeLayout 
+    		android:id = "@+id/tab_2"
+    		android:layout_width="70dp"
+    		android:layout_height="50dp"
+    		android:layout_alignParentTop="true"
+    		android:layout_toRightOf="@id/tab_1"
+    		android:layout_marginLeft="9dp"
+    		android:clickable="true"
+    		android:background="@drawable/tab_background">
+    	</RelativeLayout>     	
+    	<RelativeLayout 
+    		android:id = "@+id/tab_3"
+    		android:layout_width="70dp"
+    		android:layout_height="50dp"
+    		android:layout_alignParentTop="true"
+    		android:layout_toRightOf="@id/tab_2"
+    		android:layout_marginLeft="9dp"
+    		android:clickable="true"
+    		android:background="@drawable/tab_background">
+    	</RelativeLayout>  
+    	<RelativeLayout 
+    		android:id = "@+id/tab_4"
+    		android:layout_width="70dp"
+    		android:layout_height="50dp"
+    		android:layout_alignParentTop="true"
+    		android:layout_toRightOf="@id/tab_3"
+    		android:layout_marginLeft="9dp"
+    		android:clickable="true"
+    		android:background="@drawable/tab_background">
+    	</RelativeLayout>       	  	   	    		    	
+    </RelativeLayout>
+    <RelativeLayout 
+    	android:id="@+id/layout_top_bar"
+    	android:layout_width="fill_parent"
+    	android:layout_height="30dp"
+    	android:layout_below="@id/layout_tabs_holder"
+    	android:background="@drawable/top_bar_background">
+    </RelativeLayout>    	
+</RelativeLayout>
+  
