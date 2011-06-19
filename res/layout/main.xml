@@ -13,62 +13,220 @@
 	<RelativeLayout 
 		android:id="@+id/layout_tabs_holder_background"
 		android:layout_width="fill_parent"
-		android:layout_height="51dp"
+		android:layout_height="35dp"
 		android:layout_below="@id/layout_top"
 		android:background="@drawable/tabs_holder_background">
-	</RelativeLayout>    
+		<TextView
+	    	android:id = "@+id/user_avatar"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:drawableLeft="@drawable/ic_user_avatar_default"
+	    	android:drawablePadding="5dp"
+	    	android:layout_alignParentLeft="true"
+	    	android:layout_marginLeft="4dp"
+	    	android:text="Hello user"
+	    	android:textColor="#575757"
+	    	android:textSize="11dp"
+	    	android:gravity="center_vertical"
+	    	android:layout_centerVertical="true"/>	 	
+	</RelativeLayout>        
     <RelativeLayout 
-    	android:id = "@+id/layout_tabs_holder"
+    	android:id ="@+id/layout_main_menu_holder"
     	android:layout_width="fill_parent"
-		android:layout_height="60dp"
-		android:layout_marginLeft="5dp"			
-		android:layout_below="@id/layout_top"> 
-    	<RelativeLayout 
-    		android:id = "@+id/tab_1"
-    		android:layout_width="70dp"
-    		android:layout_height="60dp"
-    		android:layout_alignParentTop="true"
-    		android:layout_alignParentLeft="true"
+    	android:layout_height="wrap_content"
+    	android:layout_below="@id/layout_tabs_holder_background"
+    	android:background="@drawable/bg_box"  
+    	android:padding="20dp">
+    	<RelativeLayout   
+    		android:id="@+id/main_menu_start_session"
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content"
+    		android:paddingBottom="10dp" 
     		android:clickable="true"
-    		android:background="@drawable/tab_background">    	
+    		android:background="@drawable/main_menu_background">
+    		<ImageView 
+    			android:id="@+id/main_menu_item_arrow1"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentRight="true"
+    			android:src="@drawable/ic_arrow_right"
+    			android:layout_marginRight="10dp"
+    			android:layout_centerVertical="true"/>    		
+    		<ImageView 
+    			android:id="@+id/main_menu_item_image1"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentLeft="true"   
+    			android:src="@drawable/ic_main_menu_image1"
+    			android:layout_marginLeft="7dp"
+    			android:layout_centerVertical="true"/>    
+	    	<TextView
+		    	android:id = "@+id/main_menu_item_text1"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_toRightOf="@id/main_menu_item_image1"
+		    	android:layout_toLeftOf="@id/main_menu_item_arrow1"
+		    	android:layout_marginLeft="5dp"
+		    	android:text="Start new session"
+		    	android:textColor="#575757"
+		    	android:textSize="14dp"
+		    	android:layout_marginTop="11dp"/>	 
+	    	<TextView
+		    	android:id = "@+id/main_menu_item_text_snd1"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_toRightOf="@id/main_menu_item_image1"
+		    	android:layout_toLeftOf="@id/main_menu_item_arrow1"
+		    	android:layout_below="@id/main_menu_item_text1"
+		    	android:layout_marginLeft="5dp"
+		    	android:text="Ready?"
+		    	android:textColor="#575757"
+		    	android:textSize="11dp"/>		    				    					
     	</RelativeLayout>
-    	<RelativeLayout 
-    		android:id = "@+id/tab_2"
-    		android:layout_width="70dp"
-    		android:layout_height="50dp"
-    		android:layout_alignParentTop="true"
-    		android:layout_toRightOf="@id/tab_1"
-    		android:layout_marginLeft="9dp"
+    	<RelativeLayout   
+    		android:id="@+id/main_menu_time"
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content"
+    		android:paddingBottom="10dp" 
     		android:clickable="true"
-    		android:background="@drawable/tab_background">
-    	</RelativeLayout>     	
-    	<RelativeLayout 
-    		android:id = "@+id/tab_3"
-    		android:layout_width="70dp"
-    		android:layout_height="50dp"
-    		android:layout_alignParentTop="true"
-    		android:layout_toRightOf="@id/tab_2"
-    		android:layout_marginLeft="9dp"
+    		android:layout_below="@id/main_menu_start_session"
+    		android:layout_marginTop="10dp"
+    		android:background="@drawable/main_menu_background">
+    		<ImageView 
+    			android:id="@+id/main_menu_item_arrow2"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentRight="true"
+    			android:src="@drawable/ic_arrow_right"
+    			android:layout_marginRight="10dp"
+    			android:layout_centerVertical="true"/>    		
+    		<ImageView 
+    			android:id="@+id/main_menu_item_image2"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentLeft="true"   
+    			android:src="@drawable/ic_main_menu_image2"
+    			android:layout_marginLeft="7dp"
+    			android:layout_centerVertical="true"/>    
+	    	<TextView
+		    	android:id = "@+id/main_menu_item_text2"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_toRightOf="@id/main_menu_item_image2"
+		    	android:layout_toLeftOf="@id/main_menu_item_arrow2"
+		    	android:layout_marginLeft="5dp"
+		    	android:text="Just 12 hours at shopping"
+		    	android:textColor="#575757"
+		    	android:textSize="14dp"
+		    	android:layout_marginTop="11dp"/>	 
+	    	<TextView
+		    	android:id = "@+id/main_menu_item_text_snd2"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_toRightOf="@id/main_menu_item_image2"
+		    	android:layout_toLeftOf="@id/main_menu_item_arrow2"
+		    	android:layout_below="@id/main_menu_item_text2"
+		    	android:layout_marginLeft="5dp"
+		    	android:text="Why? Tap to find out more!"
+		    	android:textColor="#575757"
+		    	android:textSize="11dp"/>		    				    					
+    	</RelativeLayout>    	
+    	<RelativeLayout   
+    		android:id="@+id/main_menu_money"
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content"
+    		android:paddingBottom="10dp" 
+    		android:layout_below="@id/main_menu_time"
+    		android:layout_marginTop="10dp"
     		android:clickable="true"
-    		android:background="@drawable/tab_background">
-    	</RelativeLayout>  
-    	<RelativeLayout 
-    		android:id = "@+id/tab_4"
-    		android:layout_width="70dp"
-    		android:layout_height="50dp"
-    		android:layout_alignParentTop="true"
-    		android:layout_toRightOf="@id/tab_3"
-    		android:layout_marginLeft="9dp"
+    		android:background="@drawable/main_menu_background">
+    		<ImageView 
+    			android:id="@+id/main_menu_item_arrow3"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentRight="true"
+    			android:src="@drawable/ic_arrow_right"
+    			android:layout_marginRight="10dp"
+    			android:layout_centerVertical="true"/>    		
+    		<ImageView 
+    			android:id="@+id/main_menu_item_image3"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentLeft="true"   
+    			android:src="@drawable/ic_main_menu_image3"
+    			android:layout_marginLeft="7dp"
+    			android:layout_centerVertical="true"/>    
+	    	<TextView
+		    	android:id = "@+id/main_menu_item_text3"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_toRightOf="@id/main_menu_item_image3"
+		    	android:layout_toLeftOf="@id/main_menu_item_arrow3"
+		    	android:layout_marginLeft="5dp"
+		    	android:text="You payed $123 so far"
+		    	android:textColor="#575757"
+		    	android:textSize="14dp"
+		    	android:layout_marginTop="11dp"/>	 
+	    	<TextView
+		    	android:id = "@+id/main_menu_item_text_snd3"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_toRightOf="@id/main_menu_item_image3"
+		    	android:layout_toLeftOf="@id/main_menu_item_arrow3"
+		    	android:layout_below="@id/main_menu_item_text3"
+		    	android:layout_marginLeft="5dp"
+		    	android:text="Do you want to know more?"
+		    	android:textColor="#575757"
+		    	android:textSize="11dp"/>		    				    					
+    	</RelativeLayout>    	
+    	<RelativeLayout   
+    		android:id="@+id/main_menu_reports"
+    		android:layout_width="fill_parent" 
+    		android:layout_height="wrap_content"
+    		android:paddingBottom="10dp" 
+    		android:layout_below="@id/main_menu_money"
+    		android:layout_marginTop="10dp"
     		android:clickable="true"
-    		android:background="@drawable/tab_background">
-    	</RelativeLayout>       	  	   	    		    	
-    </RelativeLayout>
-    <RelativeLayout 
-    	android:id="@+id/layout_top_bar"
-    	android:layout_width="fill_parent"
-    	android:layout_height="30dp"
-    	android:layout_below="@id/layout_tabs_holder"
-    	android:background="@drawable/top_bar_background">
+    		android:background="@drawable/main_menu_background">
+    		<ImageView 
+    			android:id="@+id/main_menu_item_arrow4"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentRight="true"
+    			android:src="@drawable/ic_arrow_right"
+    			android:layout_marginRight="10dp"
+    			android:layout_centerVertical="true"/>    		
+    		<ImageView 
+    			android:id="@+id/main_menu_item_image4"
+    			android:layout_width="wrap_content"
+    			android:layout_height="wrap_content"
+    			android:layout_alignParentLeft="true"   
+    			android:src="@drawable/ic_main_menu_image4"
+    			android:layout_marginLeft="7dp"
+    			android:layout_centerVertical="true"/>    
+	    	<TextView
+		    	android:id = "@+id/main_menu_item_text4"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_toRightOf="@id/main_menu_item_image4"
+		    	android:layout_toLeftOf="@id/main_menu_item_arrow4"
+		    	android:layout_marginLeft="5dp"
+		    	android:text="Need a report?"
+		    	android:textColor="#575757"
+		    	android:textSize="14dp"
+		    	android:layout_marginTop="11dp"/>	 
+	    	<TextView
+		    	android:id = "@+id/main_menu_item_text_snd4"
+		    	android:layout_width="wrap_content"
+		    	android:layout_height="wrap_content"
+		    	android:layout_toRightOf="@id/main_menu_item_image4"
+		    	android:layout_toLeftOf="@id/main_menu_item_arrow4"
+		    	android:layout_below="@id/main_menu_item_text4"
+		    	android:layout_marginLeft="5dp"
+		    	android:text="Let's generate one!"
+		    	android:textColor="#575757"
+		    	android:textSize="11dp"/>		    				    					
+    	</RelativeLayout>    	    	
     </RelativeLayout>    	
 </RelativeLayout>
   

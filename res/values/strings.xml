@@ -2,4 +2,21 @@
 <resources>
     <string name="hello">Hello World, MainActivity!</string>
     <string name="app_name">ShopReporter</string>
+    
+    <!-- UI -->
+    <string name="button_back_text">Back</string>
+    <string name="button_create_session">Create</string>
+    <string name="button_signup_text">Sign up</string>
+    <string name="button_login_text">Login</string>
+    <string name="button_add_product">Add product</string>
+    <string name="button_finish_session">Finish session</string>
+    
+    <string name="login_success">Login success</string>
+    
+    <!-- Errors -->
+    <string name="error_no_internet_connection">No Internet connection</string>
+	<string name="error_incomplete_details">All fields are required</string>
+	<string name="error_login">Login failed</string>
+	<string name="error_session_not_created">This session was not created. Please try again</string>
+	<string name="error_no_session_selected">Ooops! It looks like you don\'t have a selected sessions.</string>
 </resources>

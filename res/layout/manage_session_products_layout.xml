@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#dadada">
+    <RelativeLayout 
+	    android:id = "@+id/layout_top"
+	    android:layout_width="fill_parent"
+		android:layout_height="40dp"
+		android:background="@drawable/top_background">    
+    </RelativeLayout>
+    <RelativeLayout 
+    	android:id="@+id/layout_top_bar"
+    	android:layout_width="fill_parent"
+    	android:layout_height="30dp"
+    	android:layout_below="@id/layout_top"
+    	android:background="@drawable/top_bar_background">
+    	<com.liviu.apps.shopreporter.ui.LTextView
+	    	android:id = "@+id/bar_title"
+	    	android:layout_width="wrap_content"
+	    	android:layout_height="wrap_content"
+	    	android:drawableLeft="@drawable/ic_title_new_shopping_session"
+	    	android:drawablePadding="3dp"
+	    	android:layout_alignParentLeft="true"
+	    	android:layout_marginLeft="4dp"
+	    	android:text="Carrefour in Iasi"
+	    	android:textColor="#575757"
+	    	android:textSize="11dp"
+	    	android:gravity="center_vertical"  
+	    	android:layout_centerVertical="true"/>	    	
+    </RelativeLayout>  
+	<ListView 
+		android:id = "@+id/new_products_list"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"
+		android:layout_below="@id/layout_top_bar"
+		android:layout_above="@+id/layout_content_bottom"
+		android:cacheColorHint="#00000000"
+		android:listSelector="#00000000"
+		android:divider="#00000000"
+		android:dividerHeight="0dp">
+	</ListView>	 			     	
+   	<RelativeLayout 
+    	android:id = "@id/layout_content_bottom"
+    	android:layout_width="fill_parent"
+    	android:layout_height="55dp"
+    	android:background="#222222"
+    	android:layout_alignParentBottom="true">
+		<Button 
+			android:id = "@+id/but_add"
+			android:layout_width="130dp"
+			android:layout_height="40dp"
+			android:layout_alignParentLeft="true"
+			android:textColor="#ffffff"
+			android:text="@string/button_add_product"
+			android:layout_centerVertical="true"
+			android:layout_marginLeft="12dp"
+			android:background="@drawable/button_background"
+			android:drawableLeft="@drawable/ic_button_add" 
+			android:drawablePadding="4dp"
+			android:paddingLeft="7dp"
+			android:gravity="left|center_vertical"
+			/>    	
+		<Button 
+			android:id = "@+id/but_finish"
+			android:layout_width="130dp"
+			android:layout_height="40dp"
+			android:layout_alignParentRight="true" 
+			android:textColor="#ffffff"
+			android:text="@string/button_finish_session" 
+			android:background="@drawable/button_background"		 
+			android:layout_centerVertical="true"
+			android:layout_marginRight="12dp"
+			android:drawableLeft="@drawable/ic_button_im_done" 
+			android:drawablePadding="4dp" 
+			android:paddingLeft="7dp" 
+			android:gravity="left|center_vertical"			
+			/>							  	     	    		    		    		    	
+    </RelativeLayout>	  
+	<RelativeLayout 
+		android:id = "@+id/layout_overlay_holder"
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent"		
+		android:background="#aa000000"
+		android:layout_centerInParent="true"
+		android:visibility = "gone">
+		<RelativeLayout 
+			android:id = "@+id/layout_overlay"
+			android:layout_width="fill_parent"
+			android:layout_height="300dp"
+			android:layout_margin="10dp"
+			android:background="@drawable/bg_overlay"
+			android:layout_centerInParent="true">
+		    <ScrollView 					
+				android:layout_width="fill_parent"
+				android:layout_height="fill_parent"
+				android:fillViewport="true"
+				android:layout_above="@+id/layout_add_bottom">				
+				<RelativeLayout 
+					android:id = "@+id/layout_add_content"
+					android:layout_width="fill_parent"
+					android:layout_height="fill_parent">
+					
+					<!-- Name -->
+					<com.liviu.apps.shopreporter.ui.LTextView
+				    	android:id = "@+id/layout_add_static_1"
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:layout_alignParentLeft="true"
+				    	android:layout_marginLeft="10dp"
+				    	android:layout_marginTop="10dp"
+				    	android:layout_marginRight="10dp"
+				    	android:layout_marginBottom="2dp"
+				    	android:text="Name"
+				    	android:textColor="#575757"
+				    	android:textSize="13dp"
+				    	android:gravity="center_vertical"/>
+					<com.liviu.apps.shopreporter.ui.LAutocompleteEditText
+						android:id = "@+id/layout_add_name"
+						android:layout_width="fill_parent"
+						android:layout_height="40dp"
+						android:textColor="#575757"
+						android:hint="Product name"
+						android:layout_below="@id/layout_add_static_1"
+						android:layout_marginLeft="10dp"
+						android:paddingLeft="5dp"
+						android:layout_marginRight="10dp"
+						android:singleLine="true"			
+						android:text = "product1"						
+						android:drawableRight="@drawable/ic_edtx_x"
+						android:background="@drawable/edtx_background"/>
+						
+					<!-- Quantity -->
+					<com.liviu.apps.shopreporter.ui.LTextView
+				    	android:id = "@+id/layout_add_static_2"
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:layout_alignParentLeft="true"
+				    	android:layout_marginLeft="10dp"
+				    	android:layout_marginTop="5dp"
+				    	android:layout_marginRight="10dp"
+				    	android:layout_marginBottom="2dp"
+				    	android:text="Quantity"
+				    	android:textColor="#575757"
+				    	android:textSize="13dp"
+				    	android:gravity="center_vertical"
+				    	android:layout_below="@id/layout_add_name"/>
+					<com.liviu.apps.shopreporter.ui.LAutocompleteEditText
+						android:id = "@+id/layout_add_qty"
+						android:layout_width="fill_parent"
+						android:layout_height="40dp"
+						android:textColor="#575757"
+						android:hint="Quantity"
+						android:layout_below="@id/layout_add_static_2"
+						android:layout_marginLeft="10dp"
+						android:paddingLeft="5dp"
+						android:layout_marginRight="10dp"
+						android:singleLine="true"			
+						android:text = "12"
+						android:inputType="numberDecimal"
+						android:drawableRight="@drawable/ic_edtx_x"
+						android:background="@drawable/edtx_background"/>														
+					<!-- Units -->	
+					<com.liviu.apps.shopreporter.ui.LTextView
+				    	android:id = "@+id/layout_add_static_3"
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:layout_alignParentLeft="true"
+				    	android:layout_marginLeft="10dp"
+				    	android:layout_marginTop="5dp"
+				    	android:layout_marginRight="5dp"
+				    	android:layout_marginBottom="2dp"
+				    	android:text="Units"
+				    	android:textColor="#575757"
+				    	android:textSize="13dp"
+				    	android:gravity="center_vertical"
+				    	android:layout_below="@id/layout_add_qty"/>
+					<com.liviu.apps.shopreporter.ui.LAutocompleteEditText
+						android:id = "@+id/layout_add_units"
+						android:layout_width="135dp"
+						android:layout_height="40dp"
+						android:layout_alignParentLeft="true"
+						android:textColor="#575757"
+						android:hint="Kg, litre?"
+						android:layout_below="@id/layout_add_static_3"
+						android:layout_marginLeft="10dp"
+						android:paddingLeft="5dp"
+						android:singleLine="true"
+						android:text = "kg"									
+						android:drawableRight="@drawable/ic_edtx_x"
+						android:background="@drawable/edtx_background"
+						android:layout_marginBottom = "10dp"/>	
+						
+					<!-- Price -->
+					<com.liviu.apps.shopreporter.ui.LTextView
+				    	android:id = "@+id/layout_add_static_4"
+				    	android:layout_width="wrap_content"
+				    	android:layout_height="wrap_content"
+				    	android:layout_alignLeft = "@+id/layout_add_price"
+				    	android:layout_marginTop="5dp"
+				    	android:layout_marginRight="5dp"
+				    	android:layout_marginBottom="2dp"
+				    	android:text="Price(per kg)"
+				    	android:textColor="#575757"
+				    	android:textSize="13dp"
+				    	android:gravity="center_vertical"
+				    	android:layout_below="@id/layout_add_qty"/>
+					<com.liviu.apps.shopreporter.ui.LAutocompleteEditText
+						android:id = "@id/layout_add_price"
+						android:layout_width="135dp"
+						android:layout_height="40dp"
+						android:textColor="#575757"
+						android:layout_alignParentRight="true"
+						android:hint="It's free?"
+						android:layout_below="@id/layout_add_static_4"
+						android:layout_marginLeft="5dp"
+						android:layout_marginBottom = "10dp"
+						android:paddingLeft="5dp"
+						android:layout_marginRight="10dp"
+						android:singleLine="true"			
+						android:inputType="numberDecimal"
+						android:text = "1.22"
+						android:drawableRight="@drawable/ic_edtx_x"
+						android:background="@drawable/edtx_background"/>	
+					<com.liviu.apps.shopreporter.ui.LTextView 
+						android:id = "@+id/layout_add_product_total"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@id/layout_add_price"
+						android:layout_alignParentRight="true"
+						android:layout_marginRight="10dp"
+						android:text = "Total: $0.00"
+						android:textColor="#575757"
+						android:textSize="20sp"/>																						    		  					
+				</RelativeLayout>			
+			</ScrollView>
+			<RelativeLayout 
+		    	android:id = "@id/layout_add_bottom"
+		    	android:layout_width="fill_parent"
+		    	android:layout_height="45dp"
+		    	android:background="#222222"
+		    	android:layout_alignParentBottom="true">
+				<Button 
+					android:id = "@+id/but_add_product"
+					android:layout_width="90dp"
+					android:layout_height="35dp"
+					android:textColor="#ffffff"
+					android:text="Add it"
+					android:layout_alignParentRight="true"
+					android:layout_centerVertical="true"
+					android:layout_marginRight="5dp"
+					android:background="@drawable/button_background"
+					android:drawableLeft="@drawable/ic_button_add" 
+					android:drawablePadding="4dp"
+					android:paddingLeft="7dp"
+					android:gravity="left|center_vertical"
+					/>   
+				<Button 
+					android:id = "@+id/but_reset"
+					android:layout_width="90dp"
+					android:layout_height="35dp"
+					android:textColor="#ffffff"
+					android:text="Reset"
+					android:layout_centerInParent="true"
+					android:layout_marginRight="5dp"
+					android:layout_marginLeft ="5dp"
+					android:background="@drawable/button_background"
+					android:drawableLeft="@drawable/ic_button_reset" 
+					android:drawablePadding="4dp"
+					android:paddingLeft="7dp"
+					android:gravity="left|center_vertical"
+					/>						 	
+				<Button 
+					android:id = "@+id/but_add_cancel"
+					android:layout_width="90dp"
+					android:layout_height="35dp"
+					android:textColor="#ffffff"
+					android:text="Cancel"
+					android:layout_alignParentLeft="true"
+					android:layout_centerVertical="true"
+					android:layout_marginLeft="5dp"
+					android:background="@drawable/button_background"
+					android:drawableLeft="@drawable/ic_button_x" 
+					android:drawablePadding="4dp"
+					android:paddingLeft="7dp"
+					android:gravity="left|center_vertical"
+					/>    						
+			</RelativeLayout>		
+		</RelativeLayout>
+	</RelativeLayout>	        							     		       	
+</RelativeLayout>
+  
