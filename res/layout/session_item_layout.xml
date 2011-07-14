@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"   
+  android:layout_width="fill_parent"
+  android:layout_height="42dp"
+  android:focusable="false"
+  android:focusableInTouchMode="false"
+  android:background="@drawable/session_item_background">
+  <RelativeLayout 
+  	android:id = "@+id/item_layout"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"	
+	android:layout_marginRight="5dp">
+	  <com.liviu.apps.shopreporter.ui.LTextView
+	  	android:id = "@+id/s_name"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	android:text = "Session name"
+	  	android:layout_alignParentLeft="true"	  
+	  	android:layout_toLeftOf="@+id/s_money"	  	
+	  	android:textColor="#575757"
+	  	android:layout_marginLeft="7dp"
+	  	android:layout_marginTop="3dp"
+	  	android:singleLine="true"
+	  	android:ellipsize="end"
+	  	android:textStyle="bold"
+	  	android:textSize = "17sp"/>  	
+	  <com.liviu.apps.shopreporter.ui.LTextView
+	  	android:id = "@+id/s_details"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	android:text = "Test session"
+	  	android:layout_alignParentLeft="true"	  
+	  	android:layout_toLeftOf="@id/s_money"
+	  	android:layout_below="@id/s_name"  	
+	  	android:textColor="#575757"
+	  	android:layout_marginLeft ="7dp"
+	  	android:textSize = "12sp"/>
+	  <com.liviu.apps.shopreporter.ui.LTextView
+	  	android:id = "@id/s_money"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	android:text = "$123.45"
+	  	android:layout_alignParentRight = "true"
+	  	android:layout_marginRight="5dp"
+	  	android:layout_centerVertical="true"	  	
+	  	android:textColor="#575757"	  	
+	  	android:textSize = "17sp"/>	  	
+	  <View
+	  	android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:background="#bbbbbb"  		
+		android:layout_alignParentBottom="true"/>
+	</RelativeLayout>	
+</RelativeLayout>

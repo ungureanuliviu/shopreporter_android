@@ -12,6 +12,7 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.os.Handler;
 import android.os.Message;
+import android.test.IsolatedContext;
 
 import com.liviu.apps.shopreporter.data.Product;
 import com.liviu.apps.shopreporter.data.Session;
@@ -21,9 +22,11 @@ import com.liviu.apps.shopreporter.interfaces.OnGeoCoderDataReceived;
 import com.liviu.apps.shopreporter.interfaces.SessionListener;
 import com.liviu.apps.shopreporter.utils.Console;
 import com.liviu.apps.shopreporter.utils.Convertor;
+import com.liviu.apps.shopreporter.utils.Utils;
 
 public class ShoppingSessionManager {
 
+	
 	// Constants
 	private final String 	TAG 								= "ShoppingSessionManager";
 	private final int	 	MSG_GEOCODER_OK						= 1;
@@ -33,11 +36,16 @@ public class ShoppingSessionManager {
 	private final int		MSG_ADD_PRODCT_TO_SESSION_SUCCESS	= 5;
 	private final int		MSG_SESSION_PRODUCT_REMOVED			= 6;
 	private final int 		MSG_ALL_PRODUCTS_LOADED				= 7;
-	
+	private final int 		MSG_SESSION_LOAD_ERROR				= 8;
+	private final int 		MSG_SESSION_LOAD_SUCCESS			= 9;
+	private final int		MSG_ALL_SESSIONS_LOADED				= 10;
+	private final int 		MSG_NO_COMMON_PRODUCTS 				= 11;
+	private final int       MSG_COMMON_PRODUCTS_LOADED			= 12;
+		
 	// Data
 	private Context 		context;
 	private Geocoder		geoCoder;
-	private Handler			handler;
+	private Handler			mHandler;
 	private DatabaseManger	dbMan;
 	private int				mUserId;
 	
@@ -53,7 +61,8 @@ public class ShoppingSessionManager {
 		dbMan			= DatabaseManger.getInstance(context);
 		mUserId			= -1;
 		
-		handler			= new Handler(){
+		mHandler			= new Handler(){
+			@SuppressWarnings("unchecked")
 			public void handleMessage(Message msg) {
 				switch (msg.what) {
 				case MSG_GEOCODER_OK:
@@ -122,6 +131,48 @@ public class ShoppingSessionManager {
 						mAutoCompleteLoadeListener.onAutoCompleteDataLoaded(true, (ArrayList<Product>)msg.obj);
 					}
 					break;
+				case MSG_SESSION_LOAD_ERROR:
+					if(mSessionListener != null){
+						mSessionListener.onSessionLoaded(false, null);
+					}
+					break;
+				case MSG_SESSION_LOAD_SUCCESS:
+					if(mSessionListener != null){						
+						mSessionListener.onSessionLoaded(true, (Session)msg.obj);
+					}
+					break;
+				case MSG_ALL_SESSIONS_LOADED:
+					if(mSessionListener != null){
+						try{
+							ArrayList<Session> loadedSessions = (ArrayList<Session>)msg.obj;
+							mSessionListener.onUserSessionsLoaded(true, loadedSessions);
+						}
+						catch (ClassCastException e) {
+							e.printStackTrace();
+							mSessionListener.onUserSessionsLoaded(false, null);
+						}						
+					}
+					break;
+				case MSG_NO_COMMON_PRODUCTS:
+					if(mSessionListener != null){
+						mSessionListener.onCommonProductsLoaded(false, null);
+					}
+					break;
+				case MSG_COMMON_PRODUCTS_LOADED:
+					if(mSessionListener != null){
+						try{
+							ArrayList<Product> commonProducts = (ArrayList<Product>)msg.obj;
+							if(commonProducts != null)
+								mSessionListener.onCommonProductsLoaded(true, commonProducts);							
+							else
+								mSessionListener.onCommonProductsLoaded(false, null);
+						}
+						catch(ClassCastException e){
+							e.printStackTrace();
+							mSessionListener.onCommonProductsLoaded(false, null);
+						}
+					}					
+					break;
 				default:
 					break;
 				}
@@ -141,13 +192,13 @@ public class ShoppingSessionManager {
 					msg.what = MSG_GEOCODER_OK;
 					msg.obj  = addresses;
 					
-					handler.sendMessage(msg);
+					mHandler.sendMessage(msg);
 				}
 				catch (IOException e) {
 					e.printStackTrace();
 					Console.debug(TAG, "[Geocoder]No internet connection");					
 					msg.what = MSG_GEOCODER_ERROR;
-					handler.sendMessage(msg);
+					mHandler.sendMessage(msg);
 				}
 			}
 		});
@@ -165,7 +216,7 @@ public class ShoppingSessionManager {
 		return this;
 	}
 	
-	public ShoppingSessionManager setAutoCompleateLoadListener(AutoCompleteLoadListener listener){
+	public ShoppingSessionManager setAutoCompleteLoadListener(AutoCompleteLoadListener listener){
 		mAutoCompleteLoadeListener = listener;
 		return this;
 	}
@@ -179,11 +230,12 @@ public class ShoppingSessionManager {
 			@Override
 			public void run() {
 				Message msg = new Message();				
+				Console.debug(TAG, "USER ID: " + mUserId);
 				Session newSession = dbMan.createSession(mUserId, cSessionName, cSessionLocation);
 				
 				msg.obj 	= newSession;
 				msg.what 	= MSG_SESSION_CREATED;
-				handler.sendMessage(msg);
+				mHandler.sendMessage(msg);
 			}
 		});
 		
@@ -201,7 +253,7 @@ public class ShoppingSessionManager {
 	public void addProductToSession(Session pSession, Product pProduct) {
 		
 		if(pSession == null){
-			handler.sendEmptyMessage(MSG_ADD_PRODUCT_TO_SESSION_ERROR);
+			mHandler.sendEmptyMessage(MSG_ADD_PRODUCT_TO_SESSION_ERROR);
 			Console.debug(TAG, "pSession is null");
 			return;
 		}
@@ -213,13 +265,13 @@ public class ShoppingSessionManager {
 			public void run() {
 				Product addedProduct = dbMan.addProductToSession(cSession.getId(), cProduct);
 				if(addedProduct == null){
-					handler.sendEmptyMessage(MSG_ADD_PRODUCT_TO_SESSION_ERROR);
+					mHandler.sendEmptyMessage(MSG_ADD_PRODUCT_TO_SESSION_ERROR);
 				}
 				else{
 					Message msg = new Message();
 					msg.obj 	= new Object[]{cSession, cProduct};
 					msg.what 	= MSG_ADD_PRODCT_TO_SESSION_SUCCESS;
-					handler.sendMessage(msg);
+					mHandler.sendMessage(msg);
 				}
 			}
 		});
@@ -228,7 +280,7 @@ public class ShoppingSessionManager {
 	}
 
 	
-	public void removeProduct(@LParam(paramName = "pSession") Session pSession, @LParam(paramName = "pProductToRemove") Product pProductToRemove) {
+	public void removeProduct(Session pSession, Product pProductToRemove) {
 		final Session cSession 			= pSession;
 		final Product cProductToRemove 	= pProductToRemove;
 		
@@ -241,14 +293,14 @@ public class ShoppingSessionManager {
 				msg.obj  = objs;
 				msg.what = MSG_SESSION_PRODUCT_REMOVED;
 							
-				handler.sendMessage(msg);
+				mHandler.sendMessage(msg);
 			}
 		});		
 		tRemoveProduct.start();
 	}
 	
-	public ArrayList<Session> getPauseSessions(int pUserId){
-		return dbMan.getPausedSessions(pUserId);
+	public Session getPauseSession(int pUserId){
+		return dbMan.getPausedSession(pUserId);
 	}
 	
 	/**
@@ -266,10 +318,100 @@ public class ShoppingSessionManager {
 				Message msg = new Message();
 				msg.what = MSG_ALL_PRODUCTS_LOADED;
 				msg.obj = loadedProducts;
-				handler.sendMessage(msg);
+				mHandler.sendMessage(msg);
 			}
 		});
 		
 		tLoad.start();
+	}
+
+	public void pauseSession(Session pSession) {
+		pSession.setIsPausedValue(true);
+		dbMan.pauseSession(pSession, mUserId);
+	}
+
+	public void resumeSession(int pSessionId) {
+		if(pSessionId == -1){
+			Console.debug(TAG, "resumeSession: session is null");
+			mHandler.sendEmptyMessage(MSG_SESSION_LOAD_ERROR);
+			return;
+		}
+		
+		Console.debug(TAG, "resumeSession: to resume id: " + pSessionId);
+		final int cSessionId = pSessionId;		
+		Thread tResume = new Thread(new Runnable() {
+			
+			@Override
+			public void run() {
+				Session loadedSession = dbMan.resumeSession(cSessionId, mUserId);
+				Message msg = new Message();
+				
+				Console.debug(TAG, "loaded session: " + loadedSession);
+				
+				if(loadedSession == null)
+					msg.what = MSG_SESSION_LOAD_ERROR;									
+				else
+					msg.what = MSG_SESSION_LOAD_SUCCESS;
+				
+				msg.obj = loadedSession;
+				mHandler.sendMessage(msg);
+			}
+		});
+		
+		tResume.start();
+	}
+
+	public void finishSession(Session currentSession) {
+		dbMan.finishSession(currentSession, mUserId);
+	}
+
+	public void getAllSessions(boolean pJustFinished) {
+		final boolean cJustFinished = pJustFinished;
+		Thread tLoadSessions = new Thread(new Runnable() {			
+			@Override
+			public void run() {
+				ArrayList<Session> sessions = dbMan.getAllSessions(mUserId, cJustFinished);
+				Message msg = new Message();
+				
+				msg.what = MSG_ALL_SESSIONS_LOADED;
+				msg.obj	 = sessions;
+				
+				mHandler.sendMessage(msg);
+			}
+		});
+				
+		tLoadSessions.start();
+	}
+
+	public void getCommonProducts(Session pSession1, Session pSession2) {
+		Console.debug(TAG, "getCOmmoneProducts");
+		if(pSession1 == null || pSession2 == null){
+			mHandler.sendEmptyMessage(MSG_NO_COMMON_PRODUCTS);			
+		}
+		else{
+			final Session cSession1 = pSession1;
+			final Session cSession2 = pSession2;
+			
+			Thread tCommon = new Thread(new Runnable() {				
+				@Override
+				public void run() {
+					ArrayList<Product> commonProducts = new ArrayList<Product>();
+					commonProducts = dbMan.getCommonProducts(cSession1, cSession2);
+					Console.debug(TAG, "Common products size: " + commonProducts.size());
+					Message msg = new Message();					
+					if(commonProducts.size() == 0){
+						msg.what = MSG_NO_COMMON_PRODUCTS;
+						mHandler.sendMessage(msg);
+					}					
+					else{
+						msg.what	= MSG_COMMON_PRODUCTS_LOADED;
+						msg.obj  	= commonProducts;
+						mHandler.sendMessage(msg);
+					}
+				}
+			});
+			
+			tCommon.start();
+		}
 	}
 }

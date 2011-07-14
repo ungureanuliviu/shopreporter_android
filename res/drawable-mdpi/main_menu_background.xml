@@ -7,4 +7,4 @@ android:drawable="@drawable/bg_box_main_menu_clicked" />
     <item android:state_focused="false" android:state_pressed="true" 
 android:drawable="@drawable/bg_box_main_menu_clicked"/> 
     <item android:drawable="@drawable/bg_box_main_menu"/>          
-</selector>   
+</selector>     

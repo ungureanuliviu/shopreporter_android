@@ -43,7 +43,7 @@ public class LAutocompleteEditText extends AutoCompleteTextView{
 	
 	private void init(){
 		setDrawingCacheBackgroundColor(Color.TRANSPARENT);
-		setDropDownBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));		
+		setDropDownBackgroundDrawable(new ColorDrawable(Color.WHITE));				
 		attachedImageResourceID = -1;
 		setOnItemClickListener(new OnItemClickListener() {
 			@Override

@@ -1,6 +1,7 @@
 package com.liviu.apps.shopreporter;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
@@ -13,11 +14,14 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.ContactsContract.CommonDataKinds.Relation;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.liviu.apps.shopreporter.data.Product;
@@ -30,6 +34,7 @@ import com.liviu.apps.shopreporter.interfaces.SessionListener;
 import com.liviu.apps.shopreporter.managers.ActivityIdProvider;
 import com.liviu.apps.shopreporter.ui.LEditText;
 import com.liviu.apps.shopreporter.ui.LLocationsView;
+import com.liviu.apps.shopreporter.ui.LTextView;
 import com.liviu.apps.shopreporter.utils.Cache;
 import com.liviu.apps.shopreporter.utils.Console;
 
@@ -48,13 +53,18 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
 	private Typeface				typeface;
 	private Typeface				typefaceSmall;
 	private User					user;
+	private Session					mPausedSession;
 	
 	// UI
 	private LEditText				edtxLocation;
 	private LEditText				edtxName;
 	private LLocationsView			locationView;
 	private Button					butCreate;
-	private Button					butBack;
+	private Button					butBack;	
+	private RelativeLayout			mOverlay;
+	private LTextView				mOverlayText;
+	private Button					mButOverlayNew;
+	private Button					mButOverlayResume;
 	
 	// Services
 	private LocationManager	locMan;
@@ -78,6 +88,10 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
         locationView		= (LLocationsView)findViewById(R.id.pick_location_holder);
         butBack				= (Button)findViewById(R.id.but_back);
         butCreate			= (Button)findViewById(R.id.but_create);
+        mOverlay			= (RelativeLayout)findViewById(R.id.layout_overlay_holder);
+        mOverlayText		= (LTextView)findViewById(R.id.popupText);
+        mButOverlayNew		= (Button)findViewById(R.id.but_new_session);
+        mButOverlayResume	= (Button)findViewById(R.id.but_resume_session);
                 
         // set new font
         butBack.setTypeface(typefaceSmall);
@@ -91,6 +105,16 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
         locationView.setOnLocationItemClick(this);
         butBack.setOnClickListener(this);
         butCreate.setOnClickListener(this);
+        
+        mPausedSession = user.getPausedSession();
+        if(mPausedSession != null){
+        	String popupMessage = "You have a session which has been paused:\n\n" + mPausedSession.toMinimalString() + ".\n\n Do you want to resume it or just close it and create a new one?";
+        	Console.debug(TAG, "paused session is: " + mPausedSession.toString() + " start time: " + mPausedSession.getStartTime());
+        	mOverlayText.setText(popupMessage);
+        	mOverlay.setVisibility(View.VISIBLE);
+        	mButOverlayNew.setOnClickListener(this);
+        	mButOverlayResume.setOnClickListener(this);
+        }
     }
 
     // ==* Interfaces *==
@@ -129,8 +153,7 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
 			}								
 		default:
 			break;
-		}
-		
+		}		
 		return false;
 	}
 
@@ -157,6 +180,7 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
 	public void onGeoCoderDataReceived(boolean isSuccess, List<Address> addresses) {
 		Console.debug(TAG, "onGeoCoderDataReceived: isSuccess: " + isSuccess + " addresses: " + addresses);
 		if(isSuccess){
+			locationView.setVisibility(View.VISIBLE);
 			edtxLocation.setAttachedImageFromResource(R.drawable.ic_edtx_location_green);
 			for(int i = 0; i < addresses.size(); i++)
 				locationView.add(addresses.get(i));
@@ -179,6 +203,18 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
 	@Override
 	public void onClick(View v) {
 		switch (v.getId()) {
+		case R.id.but_new_session:
+			user.getShoppingManager().finishSession(mPausedSession);
+			mOverlay.setVisibility(View.GONE);
+			break;
+		case R.id.but_resume_session:
+			Bundle bSession = mPausedSession.toBundle();
+			Intent toManageSessionActivity = new Intent(CreateNewSessionActivity.this, ManageSessionProductsActivity.class);
+			Console.debug(TAG, "bundle to send: " + bSession);
+			toManageSessionActivity.putExtra(Session.KEY_BUNDLE, bSession);
+			startActivity(toManageSessionActivity);
+			finish();			
+			break;
 		case R.id.but_back:
 			finish();			
 			break;
@@ -225,7 +261,7 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
 	public void onSessionCreated(boolean isSuccess, Session newSession) {
 		Console.debug(TAG, "[onSessionCreated]: " + isSuccess + " " + newSession); 
 		if(isSuccess){
-			Bundle bSession = newSession.toBunble();
+			Bundle bSession = newSession.toBundle();
 			Intent toManageSessionActivity = new Intent(CreateNewSessionActivity.this, ManageSessionProductsActivity.class);
 			Console.debug(TAG, "bundle to send: " + bSession);
 			toManageSessionActivity.putExtra(Session.KEY_BUNDLE, bSession);
@@ -236,6 +272,11 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
 			Toast.makeText(CreateNewSessionActivity.this, getString(R.string.error_session_not_created), Toast.LENGTH_LONG).show();
 		}		
 	}
+	
+	@Override
+	public void onSessionLoaded(boolean isSuccess, Session pSession) {
+		// nothing here
+	}
 
 	@Override
 	public void onProductAddedToSession(boolean isSuccess, Session session,
@@ -243,9 +284,20 @@ public class CreateNewSessionActivity extends Activity implements OnAttachedImag
 	}
 
 	@Override
-	public void onProductRemovedFromSession(boolean isSucces, Session session,
-			Product removedProduct) {
+	public void onProductRemovedFromSession(boolean isSucces, Session session, Product removedProduct) {
 	}
+
+	@Override
+	public void onUserSessionsLoaded(boolean isSuccess,
+			ArrayList<Session> pLoadedSessions) {
+	}
+
+	@Override
+	public void onCommonProductsLoaded(boolean isSuccess, ArrayList<Product> pCommonProducts) {
+		// nothing for the moment
+	}
+
+
 
 
 }  

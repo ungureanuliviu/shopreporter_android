@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<declare-styleable name="LProgressBox">
+		<attr name="test" format="string" />		
+		<attr name="image" format="reference" /> 	
+		<attr name="title" format="string|reference" />
+		<attr name="contentTitle" format="string|reference" />
+		<attr name="contentText" format="string|reference" />
+	</declare-styleable>
+</resources>

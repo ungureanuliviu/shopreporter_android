@@ -21,6 +21,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	// constats 
 	private final 			String 	TAG 		= "MainActivity";
 	public  final static 	int		REQUEST_ID  = ActivityIdProvider.getInstance().getNewId(MainActivity.class);
+	public  final static 	String  PREFS_NAME  = "sp_prefs";
 	
 	// data
 	private Typeface		typeface;
@@ -32,6 +33,7 @@ public class MainActivity extends Activity implements OnClickListener{
 	private RelativeLayout	butHours;
 	private RelativeLayout	butMoney;
 	private RelativeLayout	butReports;	
+	private RelativeLayout	butShopLists;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,19 +50,17 @@ public class MainActivity extends Activity implements OnClickListener{
         butHours			= (RelativeLayout)findViewById(R.id.main_menu_time);
         butMoney			= (RelativeLayout)findViewById(R.id.main_menu_money);
         butReports			= (RelativeLayout)findViewById(R.id.main_menu_reports);
-        user				= User.getInstance(this);
+        butShopLists		= (RelativeLayout)findViewById(R.id.main_menu_shopping_list);
+        user				= User.getInstance(this);                
         
         Console.debug(TAG, "user.isLoggedIn()" + user.isLoggedIn() + " " + user.getFName());
         
-        // set new font
-        ((TextView)butNewShopSession.findViewById(R.id.main_menu_item_text1)).setTypeface(typeface);
-        ((TextView)butNewShopSession.findViewById(R.id.main_menu_item_text_snd1)).setTypeface(typefaceSmall);
-        ((TextView)butHours.findViewById(R.id.main_menu_item_text2)).setTypeface(typeface);
-        ((TextView)butHours.findViewById(R.id.main_menu_item_text_snd2)).setTypeface(typefaceSmall);
-        ((TextView)butMoney.findViewById(R.id.main_menu_item_text3)).setTypeface(typeface);
-        ((TextView)butMoney.findViewById(R.id.main_menu_item_text_snd3)).setTypeface(typefaceSmall);
-        ((TextView)butReports.findViewById(R.id.main_menu_item_text4)).setTypeface(typeface);
-        ((TextView)butReports.findViewById(R.id.main_menu_item_text_snd4)).setTypeface(typefaceSmall);  
+        // set new font   
+        ((TextView)butNewShopSession.findViewById(R.id.main_menu_item_text1)).setTypeface(typefaceSmall);        
+        ((TextView)butHours.findViewById(R.id.main_menu_item_text2)).setTypeface(typefaceSmall);        
+        ((TextView)butMoney.findViewById(R.id.main_menu_item_text3)).setTypeface(typefaceSmall);
+        ((TextView)butReports.findViewById(R.id.main_menu_item_text4)).setTypeface(typefaceSmall);
+        ((TextView)butShopLists.findViewById(R.id.main_menu_item_text5)).setTypeface(typefaceSmall);
         
         // set listeners
         butNewShopSession.setOnClickListener(this);

@@ -1,6 +1,10 @@
 package com.liviu.apps.shopreporter.ui;
 
+import com.liviu.apps.shopreporter.R;
+
+import android.R.attr;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
@@ -18,28 +22,27 @@ public class LTextView extends TextView{
 	
 	public LTextView(Context context, AttributeSet attrs, int defStyle) {
 		super(context, attrs, defStyle);
-		
-		typeface = Typeface.createFromAsset(context.getAssets(), "fonts/VAGRON.TTF");
-		
-		if(typeface != null)
-			setTypeface(typeface);
+		init(context);	
 	}
 
 	public LTextView(Context context, AttributeSet attrs) {
 		super(context, attrs);
-		
-		typeface = Typeface.createFromAsset(context.getAssets(), "fonts/VAGRON.TTF");
-		
-		if(typeface != null)
-			setTypeface(typeface);
+		init(context);	
 	}
 	
 	public LTextView(Context context) {
 		super(context);
-		
-		typeface = Typeface.createFromAsset(context.getAssets(), "fonts/VAGRON.TTF");
+		init(context);		
+	}	
+	
+	private void init(Context pContext){
+		if(getTypeface() == typeface.DEFAULT_BOLD){			
+			typeface = Typeface.createFromAsset(pContext.getAssets(), "fonts/VAGROUN.TTF");		
+		}
+		else
+			typeface = Typeface.createFromAsset(pContext.getAssets(), "fonts/VAGRON.TTF");
 		
 		if(typeface != null)
-			setTypeface(typeface);
-	}	
+			setTypeface(typeface);			
+	}
 }

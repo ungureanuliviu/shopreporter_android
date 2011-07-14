@@ -133,8 +133,8 @@ public class Product {
 	
 	public Product setUnit(String pUnit) throws InvalidUnitException{
 		for(int i = 0; i < supportedUnits.length; i++){
-			if(supportedUnits[i].equals(pUnit)){
-				mUnits = pUnit;
+			if(supportedUnits[i].toString().equals(pUnit)){
+				mUnits = pUnit.toString();
 				return this;
 			}
 		}

@@ -78,7 +78,7 @@ public class LLocationsView extends HorizontalScrollView implements OnClickListe
 		
 		buttonParams.rightMargin = 5;
 		newAddrButton.setId(items.size() + 1);
-		newAddrButton.setTextColor(Color.WHITE);		
+		newAddrButton.setTextColor(Color.parseColor("#575757"));		
 		newAddrButton.setTextSize(13);
 		newAddrButton.setBackgroundResource(com.liviu.apps.shopreporter.R.drawable.button_background);
 		

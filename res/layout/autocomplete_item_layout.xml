@@ -4,31 +4,39 @@
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:background="@drawable/bg_autocomplete_item"	
-	android:focusable="false"
+	android:focusable="false"	
 	android:focusableInTouchMode="false">
+	<ImageView
+		android:id = "@+id/ac_image"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:src="@drawable/ic_autocomplete_checked"
+		android:layout_alignParentLeft="true"
+		android:layout_marginLeft="5dp"	  
+		android:layout_centerVertical="true" />
 	<TextView
 		android:id="@+id/ac_name"
 	    android:singleLine="true"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
+	    android:layout_toRightOf="@id/ac_image"
 	    android:layout_marginLeft="5dp"	    
-	    android:textColor="#ffffff"
+	    android:textColor="#575757"
 	    android:textSize="15dp"
 		android:layout_marginTop="2dp"
 	    android:text = "test name"	    
 	    android:ellipsize="end"
-	    android:layout_toLeftOf="@+id/ac_but_fill_all"/>	
-	<Button 
+	    android:layout_toLeftOf="@+id/ac_but_fill_all"/>	 
+	<Button   
 		android:id="@id/ac_but_fill_all"
 		android:layout_width="70dp"
 		android:layout_height="30dp"
 		android:text = "Fill all fields"
-		android:textColor="#ffffff"
+		android:textColor="#575757"
 		android:textSize="11dp"
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
-		android:layout_marginRight="5dp"		
+		android:layout_marginRight="10dp"		
 		android:focusableInTouchMode="false"
 		android:focusable="false"
 		android:background="@drawable/button_background"/>	    
@@ -37,10 +45,10 @@
 	    android:singleLine="true"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
+	    android:layout_toRightOf="@id/ac_image"
 	    android:layout_below="@id/ac_name"
 	    android:layout_marginLeft="5dp"	    
-	    android:textColor="#ffffff"
+	    android:textColor="#575757"
 	    android:textSize="10dp"
 	    android:text = "Last added: 10-11-2010"/>	    
 	<TextView
@@ -48,11 +56,11 @@
 	    android:singleLine="true"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignParentLeft="true"
+	    android:layout_toRightOf="@id/ac_image"
 	    android:layout_below="@id/ac_date"
 	    android:layout_marginLeft="5dp"	    
-	    android:textColor="#ffffff"
+	    android:textColor="#575757"
 	    android:textSize="11dp"
-	    android:text = "Last price: $11.01"/>	 	    
-	    
+	    android:paddingBottom="5dp"
+	    android:text = "Last price: $11.01"/>	 	    	    
 </RelativeLayout>

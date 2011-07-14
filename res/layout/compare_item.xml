@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout 
+  	xmlns:android="http://schemas.android.com/apk/res/android"
+  	android:id = "@+id/session_name_layout"    
+  	android:layout_width="fill_parent"
+  	android:layout_height="95dp"  
+  	android:focusable="false"
+  	android:focusableInTouchMode="false"
+  	android:background="#ffffff">
+  	<com.liviu.apps.shopreporter.ui.LTextView 
+  		android:id = "@+id/session_question"
+  		android:layout_width="fill_parent"
+  		android:layout_height="30dp"
+  		android:text="How much I paid?"
+  		android:textColor="#333333"
+  		android:gravity="center"
+  		android:background="@drawable/border_right"
+  		android:layout_alignParentTop="true"/>
+	<View
+		android:id = "@+id/border_center"
+		android:layout_width="1dp"
+		android:layout_height="fill_parent"
+		android:layout_centerHorizontal="true"	
+		android:background="#d2d2d2" 
+		android:layout_below="@id/session_question"/>	  	
+	<com.liviu.apps.shopreporter.ui.LTextView 
+		android:id = "@+id/session_comp_answer_left"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:text="$123.45"
+		android:layout_toLeftOf="@id/border_center"
+		android:gravity="left|center_vertical"
+		android:layout_alignParentLeft="true"
+		android:layout_marginLeft="10dp"
+		android:layout_marginTop="5dp"
+		android:layout_below="@id/session_question"
+		android:textSize="20sp"		
+		android:textColor="#3fc206"
+		/>
+	<com.liviu.apps.shopreporter.ui.LTextView 
+		android:id = "@+id/session_details_left"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="2dp"
+		android:background="#3fc206"
+		android:layout_toLeftOf="@id/border_center"
+		android:layout_below="@id/session_question"
+		android:text = "Savings: $20"
+		android:textColor = "#ffffff"
+		android:textSize="12sp"
+		android:visibility="visible"/>
+	<com.liviu.apps.shopreporter.ui.LTextView 
+		android:id = "@+id/session_comp_answer_right"
+		android:layout_width="wrap_content"
+		android:layout_height="fill_parent"
+		android:text="$123.45"
+		android:textColor = "#575757"		
+		android:gravity="left|center_vertical"
+		android:layout_toRightOf="@id/border_center"
+		android:layout_below="@id/session_question"
+		android:drawablePadding="10dp"
+		android:textSize="18sp"
+		android:layout_marginLeft="20dp"
+		android:layout_marginTop="5dp"				
+		/>		
+	<com.liviu.apps.shopreporter.ui.LTextView 
+		android:id = "@+id/session_details_right"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="2dp"
+		android:background="#3fc206"
+		android:layout_alignParentRight="true"
+		android:layout_below="@id/session_question"
+		android:text = "Savings: $20"
+		android:textColor = "#ffffff"
+		android:textSize="12sp"
+		android:visibility="visible"/>		
+</RelativeLayout>
+

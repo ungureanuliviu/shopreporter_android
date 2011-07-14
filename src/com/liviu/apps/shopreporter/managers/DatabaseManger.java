@@ -12,18 +12,21 @@ import android.util.Log;
 
 import com.liviu.apps.shopreporter.data.Product;
 import com.liviu.apps.shopreporter.data.Session;
+import com.liviu.apps.shopreporter.data.Tip;
 import com.liviu.apps.shopreporter.data.User;
 import com.liviu.apps.shopreporter.exceptions.InvalidUnitException;
 import com.liviu.apps.shopreporter.utils.Console;
 import com.liviu.apps.shopreporter.utils.Utils;
 
 public class DatabaseManger {
+	
 	// Constants
 	private final String TAG			= "Database";
 	private final String TABLE_USERS	= "table_users";
 	private final String TABLE_SESSIONS = "table_sessions";
 	private final String TABLE_PRODUCTS = "table_products";
 	private final String DB_NAME		= "shp_db";
+	private final String TABLE_TIPS		= "table_tips";
 	
 	private final String CREATE_TABLE_USERS    		= "create table if not exists table_users( id integer primary key autoincrement," +
 																							  "authname integer not null unique," +
@@ -44,6 +47,15 @@ public class DatabaseManger {
 	private final String USER_AUTH_NAME				= "authname";
 	private final String USER_PASSWORD				= "password";
 	
+	private final String CREATE_TABLE_TIPS			= "create table if not exists table_tips( id integer primary key autoincrement," +
+																							  "title text not null, " +
+																							  "content text not null," +
+																							  "category integer not null default 0);";
+	private final String TIP_ID						= "id";
+	private final String TIP_TITLE					= "title";
+	private final String TIP_CONTENT				= "content";
+	private final String TIP_CATEGORY				= "category";
+	
 	private final String CREATE_TABLE_SESSIONS		= "create table if not exists table_sessions ( id integer primary key autoincrement," +
 																								   "user_id integer not null," +
 																								   "location text not null," +
@@ -52,6 +64,7 @@ public class DatabaseManger {
 																								   "total_money double default 0.00," +
 																								   "start_time long not null," +
 																								   "end_time long not null default -1," +
+																								   "is_closed ingerger not null default 0," +
 																								   "is_paused integer not null default 0," +																								   
 																								   "total_products integer default 0);";
 	private final String SESSION_ID 			= "id";
@@ -64,6 +77,7 @@ public class DatabaseManger {
 	private final String SESSION_END_TIME		= "end_time";
 	private final String SESSION_IS_PAUSED 		= "is_paused";
 	private final String SESSION_TOTAL_PRODUCTS = "total_products";
+	private final String SESSION_IS_CLOSED		= "is_closed";
 	
 	private final String CREATE_TABLE_PRODUCTS 	= "create table if not exists table_products( id integer primary key autoincrement," +											
 																							 "session_id integer not null," +
@@ -106,6 +120,7 @@ public class DatabaseManger {
 			db.execSQL(CREATE_TABLE_USERS);
 			db.execSQL(CREATE_TABLE_SESSIONS);
 			db.execSQL(CREATE_TABLE_PRODUCTS);
+			db.execSQL(CREATE_TABLE_TIPS);
 			closeDatabase();
 			return true;
 		}
@@ -269,7 +284,7 @@ public class DatabaseManger {
 		}
 		
 		ContentValues values = new ContentValues();
-		values.put(PRODUCT_ADDED_TIME, pProduct.getId());
+		values.put(PRODUCT_ADDED_TIME, pProduct.getAddedTime());
 		values.put(PRODUCT_NAME, pProduct.getName());
 		values.put(PRODUCT_PRICE, pProduct.getPrice());
 		values.put(PRODUCT_QTY, pProduct.getQuantity());
@@ -303,35 +318,37 @@ public class DatabaseManger {
 		return affectedRows > 0;		
 	}
 
-	public synchronized ArrayList<Session> getPausedSessions(int pUserId) {
-		ArrayList<Session> 	pausedSessions 	= new ArrayList<Session>();
+	public synchronized Session getPausedSession(int pUserId) {
+		
+		Session				pausedSession	= null;
 		String[] 			projection	 	= new String[]{
-															SESSION_ID,				// 0
-															SESSION_NAME,			// 1
-															SESSION_LOCATION,		// 2
-															SESSION_START_TIME,		// 3
-															SESSION_TOTAL_MONEY,	// 4
-															SESSION_END_TIME,		// 5
-															SESSION_TOTAL_PRODUCTS, // 6
-															SESSION_TOTAL_TIME		// 7		
+															SESSION_ID	// 0															
 														  };
 		
 		Cursor c = null;
 		openDatabase(); 
-		c = db.query(TABLE_SESSIONS, projection, SESSION_USER_ID + "=" + pUserId  + " AND " + SESSION_IS_PAUSED + "=1", null, null, null, null);
+		c = db.query(TABLE_SESSIONS, projection, SESSION_USER_ID + "=" + pUserId  + " AND " + SESSION_IS_PAUSED + "=1" + " AND " + SESSION_IS_CLOSED + "=0", null, null, null, null);
 		
 		if(c == null){
 			closeDatabase();
-			return pausedSessions;
+			return null;
 		}
 		
 		if(c.getCount() == 0){
 			Console.debug(TAG, "the user " + pUserId + " do not have any paused sessions");
 			c.close();
 			closeDatabase();
-			return pausedSessions;
+			return null;
 		}		
-		return null;	
+		
+		c.moveToFirst();
+		int sessionId = c.getInt(0);			
+		c.close();
+		closeDatabase();
+		
+		pausedSession = loadSession(sessionId, false);		
+		Console.debug(TAG, "finish session: " + pausedSession + " USERID: " + pUserId);		
+		return pausedSession;	
 	}
 
 	public synchronized ArrayList<Product> getAllProducts() {
@@ -387,5 +404,376 @@ public class DatabaseManger {
 		closeDatabase();
 		
 		return products;
+	}
+
+	public synchronized boolean pauseSession(Session pSession, int pUserId) {
+		if(pSession != null){
+			Console.debug(TAG, "pauseSession " + pSession);			
+			ContentValues values = new ContentValues();
+			values.put(SESSION_END_TIME, pSession.getEndTime());
+			values.put(SESSION_IS_PAUSED, 1);
+			values.put(SESSION_TOTAL_MONEY, pSession.getTotalMoney());
+			values.put(SESSION_TOTAL_PRODUCTS, pSession.getTotalProducts(false));
+			values.put(SESSION_TOTAL_TIME, pSession.getTotalTime());
+			values.put(SESSION_IS_CLOSED, (pSession.isClosed() == true ? 1 : 0));
+			
+			openDatabase();
+			int affectedRows = db.update(TABLE_SESSIONS, values, SESSION_ID + "=" + pSession.getId()  + " AND " + SESSION_USER_ID + "=" + pUserId, null);
+			Console.debug(TAG, "session was paused " + (affectedRows > 0));
+			closeDatabase();
+			return affectedRows > 0;
+		}
+		else
+			return false;
+	}
+	
+	public synchronized Session resumeSession(int pSessionId, int pUserId){
+		ContentValues values = new ContentValues();
+		values.put(SESSION_IS_PAUSED, 0);
+		
+		openDatabase();
+		db.update(TABLE_SESSIONS, values, SESSION_ID + "=" + pSessionId + " AND " + SESSION_USER_ID + "=" + pUserId, null);
+		closeDatabase();
+		
+		return loadSession(pSessionId, true);
+	}
+
+	public synchronized Session loadSession(int pSessionId, boolean pShouldLoadProducts) {	
+			Session				loadedSession   = null;
+			String[] 			projection	 	= new String[]{
+																SESSION_ID,				// 0
+																SESSION_NAME,			// 1
+																SESSION_LOCATION,		// 2
+																SESSION_START_TIME,		// 3
+																SESSION_TOTAL_MONEY,	// 4
+																SESSION_END_TIME,		// 5
+																SESSION_TOTAL_PRODUCTS, // 6
+																SESSION_TOTAL_TIME,		// 7
+																SESSION_USER_ID,		// 8
+																SESSION_IS_CLOSED		// 9
+															  };
+			
+			Cursor c = null;
+			openDatabase(); 
+			c = db.query(TABLE_SESSIONS, projection, SESSION_ID + "=" + pSessionId, null, null, null, null);
+			
+			if(c == null){
+				closeDatabase();
+				return null;
+			}
+			
+			if(c.getCount() == 0){
+				Console.debug(TAG, "No session found with id: " + pSessionId);
+				c.close();
+				closeDatabase();
+				return null;
+			}		
+			
+			c.moveToFirst();
+			
+			loadedSession = new Session();
+			loadedSession.setId(c.getInt(0))
+						 .setName(c.getString(1))
+						 .setLocation(c.getString(2))
+						 .setStartTime(c.getLong(3))
+						 .setTotalMoney(c.getDouble(4))
+						 .setEndTime(c.getLong(5))
+						 .setTotalProducts(c.getInt(6))
+						 .setTotalTime(c.getLong(7))
+						 .setUserId(c.getInt(8))						 
+						 .setIsClosed((c.getInt(9) == 1 ? true : false))
+						 .setLastStartedTime(Utils.now());
+			
+			c.close();
+			closeDatabase();
+			
+			if(pShouldLoadProducts){
+				// load session's products
+				loadedSession.setProducts(loadSessionProducts(loadedSession.getId()));
+			}
+			
+			return loadedSession;				
+	}
+	
+	public synchronized ArrayList<Product> loadSessionProducts(int pSessionId){
+		
+		ArrayList<Product> products = new ArrayList<Product>();
+		Cursor c 					= null;
+		String[]projection 			= new String[]{
+												    PRODUCT_ADDED_TIME, // 0
+													PRODUCT_NAME,		// 1
+													PRODUCT_PRICE,		// 2
+													PRODUCT_QTY,		// 3
+													PRODUCT_UNITS,		// 4
+													PRODUCT_ID,			// 5
+													PRODUCT_SESSION_ID  // 6
+												 };		
+		
+		openDatabase();
+		c = db.query(TABLE_PRODUCTS, projection, PRODUCT_SESSION_ID + "=" + pSessionId, null, null, null, null);
+		
+		if(c == null){
+			closeDatabase();
+			return products;
+		}
+		
+		int numRows = c.getCount();
+		
+		if(numRows == 0){
+			c.close();
+			closeDatabase();
+			return products;
+		}
+		
+		c.moveToFirst();
+		for(int i = 0; i < numRows; i++){
+			Product p = new Product();
+			p.setAddedTime(c.getLong(0));
+			p.setName(c.getString(1));
+			p.setPrice(c.getDouble(2));
+			p.setQuantity(c.getDouble(3));
+			p.setId(c.getInt(5));
+			p.setSessionId(c.getInt(6));			
+			try {
+				p.setUnit(c.getString(4));
+			} catch (InvalidUnitException e) {
+				e.printStackTrace();
+			}			
+			
+			products.add(p);			
+			c.moveToNext();
+		}
+		
+		c.close();
+		closeDatabase();
+		
+		return products;		
+	}
+
+	public void finishSession(Session currentSession, int pUserId) {
+		Console.debug(TAG, "finish session: " + currentSession + " USERID: " + pUserId);
+		ContentValues values = new ContentValues();
+		values.put(SESSION_IS_PAUSED, 0);
+		values.put(SESSION_IS_CLOSED, 1);
+		
+		openDatabase();
+		int affectedRows = db.update(TABLE_SESSIONS, values, SESSION_ID + "=" + currentSession.getId() + " AND " + SESSION_USER_ID + "=" + pUserId, null);
+		closeDatabase();	
+		
+		Console.debug(TAG, "finishSession: " + affectedRows);
+	}
+	
+	public synchronized Tip addTip(Tip pTip){
+		if(pTip == null)
+			return null;
+		ContentValues values = new ContentValues();
+		
+		
+		values.put(TIP_TITLE, pTip.getTitle());
+		values.put(TIP_CONTENT, pTip.getContent());
+		values.put(TIP_CATEGORY, pTip.getCategory());
+		
+		openDatabase();
+		int newTipId = (int) db.insert(TABLE_TIPS, null, values);
+		closeDatabase();
+		
+		if(newTipId == -1){
+			return null;
+		}
+		else{
+			pTip.setId(newTipId);
+		}
+		
+		Console.debug(TAG, "added tip: " + pTip);
+		
+		return pTip;		
+	}
+	
+	public synchronized Tip removeTip(Tip  pTip){
+		if(pTip == null)
+			return null;
+		
+		openDatabase();
+		int affectedRow = db.delete(TABLE_TIPS, TIP_ID +"=" + pTip.getId(), null);
+		closeDatabase();
+		
+		Console.debug(TAG, "removed tip: " + pTip + " affectedRows: " + affectedRow);
+		if(affectedRow > 0)
+			return pTip;
+		else
+			return null;
+	}
+	
+	public synchronized ArrayList<Tip> getTipsByCategory(int pCategory){
+		ArrayList<Tip> tips = new ArrayList<Tip>();
+		String[] projection = new String[]{
+											TIP_ID,		// 0
+											TIP_TITLE,	// 1
+											TIP_CONTENT	// 2		
+										  };
+		
+		if(pCategory == -1)
+			return tips;
+		
+		Cursor c = null;
+		
+		openDatabase();
+		c = db.query(TABLE_TIPS, projection, TIP_CATEGORY + "=" + pCategory, null, null, null, null);
+		
+		if(c == null){
+			Console.debug(TAG, "cursor is null in getTipsByCategory " + pCategory);
+			closeDatabase();
+			return tips;
+		}
+		
+		int numRows = c.getCount();
+		if(numRows == 0){
+			Console.debug(TAG, "no tips for category " + pCategory);
+			c.close();
+			closeDatabase();
+			return tips;
+		}
+		
+		c.moveToFirst();
+		for(int i = 0; i < numRows; i++){
+			Tip tip = new Tip(c.getInt(0), c.getString(1), c.getString(2), pCategory);
+			tips.add(tip);			
+			c.moveToNext();
+		}
+		
+		c.close();
+		closeDatabase();
+					
+		return tips;
+	}
+
+	public ArrayList<Session> getAllSessions(int pUserId, boolean pJustFinished) {
+		Session				loadedSession   = null;
+		ArrayList<Session>  loadedSessions	= new ArrayList<Session>();
+		String[] 			projection	 	= new String[]{
+															SESSION_ID,				// 0
+															SESSION_NAME,			// 1
+															SESSION_LOCATION,		// 2
+															SESSION_START_TIME,		// 3
+															SESSION_TOTAL_MONEY,	// 4
+															SESSION_END_TIME,		// 5
+															SESSION_TOTAL_PRODUCTS, // 6
+															SESSION_TOTAL_TIME,		// 7
+															SESSION_USER_ID,		// 8
+															SESSION_IS_CLOSED		// 9
+														  };
+		
+		Cursor c = null;
+		openDatabase(); 
+		c = db.query(TABLE_SESSIONS, projection, SESSION_USER_ID + "=" + pUserId + (pJustFinished == true ? " AND " + SESSION_IS_CLOSED + "=1" : ""), null, null, null, SESSION_START_TIME + " ASC");
+		
+		if(c == null){
+			closeDatabase();
+			return null;
+		}
+		
+		if(c.getCount() == 0){
+			Console.debug(TAG, "No session found for user id: " + pUserId);
+			c.close();
+			closeDatabase();
+			return loadedSessions;
+		}		
+		
+		int numRows = c.getCount();
+		
+		c.moveToFirst();
+		
+			for(int i = 0 ; i < numRows; i++){
+				loadedSession = new Session();
+				loadedSession.setId(c.getInt(0))
+							 .setName(c.getString(1))
+							 .setLocation(c.getString(2))
+							 .setStartTime(c.getLong(3))
+							 .setTotalMoney(c.getDouble(4))
+							 .setEndTime(c.getLong(5))
+							 .setTotalProducts(c.getInt(6))
+							 .setTotalTime(c.getLong(7))
+							 .setUserId(c.getInt(8))						 
+							 .setIsClosed((c.getInt(9) == 1 ? true : false))
+							 .setLastStartedTime(Utils.now());
+				
+				loadedSessions.add(loadedSession);		
+				c.moveToNext();
+			}
+		
+		c.close();
+		closeDatabase();
+			
+		return loadedSessions;
+		
+	}
+
+	public synchronized ArrayList<Product> getCommonProducts(Session pSession1, Session pSession2) {
+		ArrayList<Product> 	commonProducts 	= new ArrayList<Product>();
+		Product 			tempProduct 	= new Product();
+		Cursor 				c 				= null;
+		String[]			projection 		= new String[]{
+												    PRODUCT_ADDED_TIME, // 0
+													PRODUCT_NAME,		// 1
+													PRODUCT_PRICE,		// 2
+													PRODUCT_QTY,		// 3
+													PRODUCT_UNITS,		// 4
+													PRODUCT_ID,			// 5
+													PRODUCT_SESSION_ID  // 6
+												 };		
+		
+		openDatabase();
+		c = db.query(TABLE_PRODUCTS, projection, null, null, PRODUCT_NAME, null, null);
+		c = db.rawQuery("SELECT " + PRODUCT_ADDED_TIME + ", " + 
+									PRODUCT_NAME + ", " +
+									PRODUCT_PRICE + "," +
+									PRODUCT_QTY + ", " +
+									PRODUCT_UNITS + ", " + 
+									PRODUCT_ID + ", " +
+									PRODUCT_SESSION_ID + 
+									"  FROM " + TABLE_PRODUCTS + " WHERE " + 
+																	PRODUCT_SESSION_ID + "=" + pSession1.getId() +
+																	" AND " + PRODUCT_NAME + " IN (SELECT " + PRODUCT_NAME + " FROM " + TABLE_PRODUCTS + " WHERE " + PRODUCT_SESSION_ID + "=" + pSession2.getId() + " )", null); 
+																						
+		Console.debug(TAG, "common products query: " + "SELECT * FROM " + TABLE_PRODUCTS + " WHERE " + 
+																	PRODUCT_SESSION_ID + "=" + pSession1.getId() +
+																	" AND " + PRODUCT_NAME + " IN (SELECT " + PRODUCT_NAME + " FROM " + TABLE_PRODUCTS + " WHERE " + PRODUCT_SESSION_ID + "=" + pSession2.getId() + " )");
+		if(c == null){
+			closeDatabase();
+			return commonProducts;
+		}
+		
+		int numRows = c.getCount();
+		
+		if(numRows == 0){
+			c.close();
+			closeDatabase();
+			return commonProducts;
+		}
+		
+		c.moveToFirst();
+		for(int i = 0; i < numRows; i++){
+			Console.debug(TAG, "Common product " + i);
+			Product p = new Product();
+			p.setAddedTime(c.getLong(0));
+			p.setName(c.getString(1));
+			p.setPrice(c.getDouble(2));
+			p.setQuantity(c.getDouble(3));
+			p.setId(c.getInt(5));
+			p.setSessionId(c.getInt(6));			
+			try {
+				p.setUnit(c.getString(4));
+			} catch (InvalidUnitException e) {
+				e.printStackTrace();
+			}			
+			
+			commonProducts.add(p);			
+			c.moveToNext();
+		}
+		
+		c.close();
+		closeDatabase();
+		
+		return commonProducts;
 	}
 }

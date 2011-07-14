@@ -1,13 +1,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android" >
 	<item>
 		<shape xmlns:android="http://schemas.android.com/apk/res/android">
-	   	    <gradient 
-	   	    	android:type = "linear" android:startColor = "#00000000" android:endColor = "#dadada" android:angle = "270"/>    
+	   	    <solid android:color="#bbbbbb"/>      
 		</shape> 
     </item>
-    <item android:bottom = "2dp">
+    <item android:bottom = "1dp">
     	<shape xmlns:android="http://schemas.android.com/apk/res/android">
-	   	    <solid android:color="#f9f9f9"/>    		    
+	   	    <solid android:color="#dadada"/>    		    
 	</shape> 
     </item>       
 </layer-list> 

@@ -8,7 +8,7 @@
 	    android:id = "@+id/layout_top"
 	    android:layout_width="fill_parent"
 		android:layout_height="40dp"
-		android:background="@drawable/top_background">    
+		android:background="@drawable/top_new_background">    
     </RelativeLayout>
 	<RelativeLayout 
 		android:id="@+id/layout_tabs_holder_background"
@@ -29,204 +29,175 @@
 	    	android:textSize="11dp"
 	    	android:gravity="center_vertical"
 	    	android:layout_centerVertical="true"/>	 	
-	</RelativeLayout>        
-    <RelativeLayout 
-    	android:id ="@+id/layout_main_menu_holder"
-    	android:layout_width="fill_parent"
-    	android:layout_height="wrap_content"
-    	android:layout_below="@id/layout_tabs_holder_background"
-    	android:background="@drawable/bg_box"  
-    	android:padding="20dp">
-    	<RelativeLayout   
-    		android:id="@+id/main_menu_start_session"
-    		android:layout_width="fill_parent" 
-    		android:layout_height="wrap_content"
-    		android:paddingBottom="10dp" 
-    		android:clickable="true"
-    		android:background="@drawable/main_menu_background">
-    		<ImageView 
-    			android:id="@+id/main_menu_item_arrow1"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentRight="true"
-    			android:src="@drawable/ic_arrow_right"
-    			android:layout_marginRight="10dp"
-    			android:layout_centerVertical="true"/>    		
-    		<ImageView 
-    			android:id="@+id/main_menu_item_image1"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentLeft="true"   
-    			android:src="@drawable/ic_main_menu_image1"
-    			android:layout_marginLeft="7dp"
-    			android:layout_centerVertical="true"/>    
-	    	<TextView
-		    	android:id = "@+id/main_menu_item_text1"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_toRightOf="@id/main_menu_item_image1"
-		    	android:layout_toLeftOf="@id/main_menu_item_arrow1"
-		    	android:layout_marginLeft="5dp"
-		    	android:text="Start new session"
-		    	android:textColor="#575757"
-		    	android:textSize="14dp"
-		    	android:layout_marginTop="11dp"/>	 
-	    	<TextView
-		    	android:id = "@+id/main_menu_item_text_snd1"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_toRightOf="@id/main_menu_item_image1"
-		    	android:layout_toLeftOf="@id/main_menu_item_arrow1"
-		    	android:layout_below="@id/main_menu_item_text1"
-		    	android:layout_marginLeft="5dp"
-		    	android:text="Ready?"
-		    	android:textColor="#575757"
-		    	android:textSize="11dp"/>		    				    					
-    	</RelativeLayout>
-    	<RelativeLayout   
-    		android:id="@+id/main_menu_time"
-    		android:layout_width="fill_parent" 
-    		android:layout_height="wrap_content"
-    		android:paddingBottom="10dp" 
-    		android:clickable="true"
-    		android:layout_below="@id/main_menu_start_session"
-    		android:layout_marginTop="10dp"
-    		android:background="@drawable/main_menu_background">
-    		<ImageView 
-    			android:id="@+id/main_menu_item_arrow2"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentRight="true"
-    			android:src="@drawable/ic_arrow_right"
-    			android:layout_marginRight="10dp"
-    			android:layout_centerVertical="true"/>    		
-    		<ImageView 
-    			android:id="@+id/main_menu_item_image2"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentLeft="true"   
-    			android:src="@drawable/ic_main_menu_image2"
-    			android:layout_marginLeft="7dp"
-    			android:layout_centerVertical="true"/>    
-	    	<TextView
-		    	android:id = "@+id/main_menu_item_text2"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_toRightOf="@id/main_menu_item_image2"
-		    	android:layout_toLeftOf="@id/main_menu_item_arrow2"
-		    	android:layout_marginLeft="5dp"
-		    	android:text="Just 12 hours at shopping"
-		    	android:textColor="#575757"
-		    	android:textSize="14dp"
-		    	android:layout_marginTop="11dp"/>	 
-	    	<TextView
-		    	android:id = "@+id/main_menu_item_text_snd2"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_toRightOf="@id/main_menu_item_image2"
-		    	android:layout_toLeftOf="@id/main_menu_item_arrow2"
-		    	android:layout_below="@id/main_menu_item_text2"
-		    	android:layout_marginLeft="5dp"
-		    	android:text="Why? Tap to find out more!"
-		    	android:textColor="#575757"
-		    	android:textSize="11dp"/>		    				    					
-    	</RelativeLayout>    	
-    	<RelativeLayout   
-    		android:id="@+id/main_menu_money"
-    		android:layout_width="fill_parent" 
-    		android:layout_height="wrap_content"
-    		android:paddingBottom="10dp" 
-    		android:layout_below="@id/main_menu_time"
-    		android:layout_marginTop="10dp"
-    		android:clickable="true"
-    		android:background="@drawable/main_menu_background">
-    		<ImageView 
-    			android:id="@+id/main_menu_item_arrow3"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentRight="true"
-    			android:src="@drawable/ic_arrow_right"
-    			android:layout_marginRight="10dp"
-    			android:layout_centerVertical="true"/>    		
-    		<ImageView 
-    			android:id="@+id/main_menu_item_image3"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentLeft="true"   
-    			android:src="@drawable/ic_main_menu_image3"
-    			android:layout_marginLeft="7dp"
-    			android:layout_centerVertical="true"/>    
-	    	<TextView
-		    	android:id = "@+id/main_menu_item_text3"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_toRightOf="@id/main_menu_item_image3"
-		    	android:layout_toLeftOf="@id/main_menu_item_arrow3"
-		    	android:layout_marginLeft="5dp"
-		    	android:text="You payed $123 so far"
-		    	android:textColor="#575757"
-		    	android:textSize="14dp"
-		    	android:layout_marginTop="11dp"/>	 
-	    	<TextView
-		    	android:id = "@+id/main_menu_item_text_snd3"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_toRightOf="@id/main_menu_item_image3"
-		    	android:layout_toLeftOf="@id/main_menu_item_arrow3"
-		    	android:layout_below="@id/main_menu_item_text3"
-		    	android:layout_marginLeft="5dp"
-		    	android:text="Do you want to know more?"
-		    	android:textColor="#575757"
-		    	android:textSize="11dp"/>		    				    					
-    	</RelativeLayout>    	
-    	<RelativeLayout   
-    		android:id="@+id/main_menu_reports"
-    		android:layout_width="fill_parent" 
-    		android:layout_height="wrap_content"
-    		android:paddingBottom="10dp" 
-    		android:layout_below="@id/main_menu_money"
-    		android:layout_marginTop="10dp"
-    		android:clickable="true"
-    		android:background="@drawable/main_menu_background">
-    		<ImageView 
-    			android:id="@+id/main_menu_item_arrow4"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentRight="true"
-    			android:src="@drawable/ic_arrow_right"
-    			android:layout_marginRight="10dp"
-    			android:layout_centerVertical="true"/>    		
-    		<ImageView 
-    			android:id="@+id/main_menu_item_image4"
-    			android:layout_width="wrap_content"
-    			android:layout_height="wrap_content"
-    			android:layout_alignParentLeft="true"   
-    			android:src="@drawable/ic_main_menu_image4"
-    			android:layout_marginLeft="7dp"
-    			android:layout_centerVertical="true"/>    
-	    	<TextView
-		    	android:id = "@+id/main_menu_item_text4"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_toRightOf="@id/main_menu_item_image4"
-		    	android:layout_toLeftOf="@id/main_menu_item_arrow4"
-		    	android:layout_marginLeft="5dp"
-		    	android:text="Need a report?"
-		    	android:textColor="#575757"
-		    	android:textSize="14dp"
-		    	android:layout_marginTop="11dp"/>	 
-	    	<TextView
-		    	android:id = "@+id/main_menu_item_text_snd4"
-		    	android:layout_width="wrap_content"
-		    	android:layout_height="wrap_content"
-		    	android:layout_toRightOf="@id/main_menu_item_image4"
-		    	android:layout_toLeftOf="@id/main_menu_item_arrow4"
-		    	android:layout_below="@id/main_menu_item_text4"
-		    	android:layout_marginLeft="5dp"
-		    	android:text="Let's generate one!"
-		    	android:textColor="#575757"
-		    	android:textSize="11dp"/>		    				    					
-    	</RelativeLayout>    	    	
-    </RelativeLayout>    	
+	</RelativeLayout>
+	<ScrollView 		
+		android:layout_width="110dp"
+		android:layout_height="fill_parent"
+    	android:layout_below="@id/layout_tabs_holder_background"    
+    	android:layout_alignParentRight="true"
+    	android:fillViewport="true"
+    	android:scrollbars="none">		
+	    <RelativeLayout
+	    	android:id ="@+id/layout_main_menu_holder"     	
+	    	android:layout_width="110dp"
+	    	android:layout_height="fill_parent"
+	    	android:background="@drawable/bg_right_bar"
+	    	android:paddingLeft="1dp">
+	    	<RelativeLayout   
+	    		android:id="@+id/main_menu_start_session"
+	    		android:layout_width="fill_parent" 
+	    		android:layout_height="45dp"    		
+	    		android:clickable="true"
+	    		android:background="@drawable/left_button_background">
+	    		<RelativeLayout 
+	    			android:id="@+id/main_menu_item_image1"
+	    			android:layout_width="40dp"
+	    			android:layout_height="fill_parent"
+	    			android:layout_alignParentRight="true"
+	    			android:background="@drawable/bg_blue">  		
+		    		<ImageView 	    			
+		    			android:layout_width="wrap_content"
+		    			android:layout_height="wrap_content"	    			  
+		    			android:src="@drawable/ic_basket"
+		    			android:layout_centerInParent="true"/>    
+		    	</RelativeLayout>
+		    	<TextView
+			    	android:id = "@+id/main_menu_item_text1"
+			    	android:layout_width="fill_parent"
+			    	android:layout_height="wrap_content"
+			    	android:layout_toLeftOf="@id/main_menu_item_image1"
+			    	android:layout_marginRight="5dp"
+			    	android:text="New\nsession"
+			    	android:textColor="#575757"
+			    	android:textSize="12dp"
+			    	android:gravity="center_horizontal"
+			    	android:layout_marginTop="8dp"/>	 	    				    					
+	    	</RelativeLayout>
+	    	<RelativeLayout   
+	    		android:id="@+id/main_menu_time"
+	    		android:layout_width="fill_parent" 
+	    		android:layout_height="45dp"
+	    		android:clickable="true"
+	    		android:layout_below="@id/main_menu_start_session"    		
+	    		android:background="@drawable/left_button_background">
+	    		<RelativeLayout 
+	    			android:id="@+id/main_menu_item_image2"
+	    			android:layout_width="40dp"
+	    			android:layout_height="fill_parent"
+	    			android:layout_alignParentRight="true"
+	    			android:background="@drawable/bg_green">  	    		 		
+		    		<ImageView 
+		    			android:layout_width="wrap_content"
+		    			android:layout_height="wrap_content"
+		    			android:src="@drawable/ic_time"		    			
+		    			android:layout_centerInParent="true"/>    
+		    	</RelativeLayout>
+		    	<TextView
+			    	android:id = "@+id/main_menu_item_text2"
+			    	android:layout_width="fill_parent"
+			    	android:layout_height="wrap_content"
+			    	android:layout_toLeftOf="@id/main_menu_item_image2"
+			    	android:layout_marginRight="5dp"
+			    	android:text="Shopping \ntime"
+			    	android:textColor="#575757"
+			    	android:textSize="12dp"
+			    	android:gravity="center_horizontal"
+			    	android:layout_marginTop="8dp"/>	 	    		    				    				
+	    	</RelativeLayout>    	
+	    	<RelativeLayout   
+	    		android:id="@+id/main_menu_money"
+	    		android:layout_width="fill_parent" 
+	    		android:layout_height="45dp"
+	    		android:layout_below="@id/main_menu_time"
+	    		android:clickable="true"
+	    		android:background="@drawable/left_button_background">
+	    		<RelativeLayout 
+	    			android:id="@+id/main_menu_item_image3"
+	    			android:layout_width="40dp"
+	    			android:layout_height="fill_parent"
+	    			android:layout_alignParentRight="true"
+	    			android:background="@drawable/bg_yellow">      		    		
+		    		<ImageView 
+		    			android:layout_width="wrap_content"
+		    			android:layout_height="wrap_content"
+		    			android:src="@drawable/ic_money"
+		    			android:layout_centerInParent="true"/>    
+		    	</RelativeLayout>
+		    	<TextView
+			    	android:id = "@+id/main_menu_item_text3"
+			    	android:layout_width="fill_parent"
+			    	android:layout_height="wrap_content"
+			    	android:layout_toLeftOf="@id/main_menu_item_image3"
+			    	android:layout_marginRight="5dp"
+			    	android:text="Money \nSpent"
+			    	android:textColor="#575757"
+			    	android:textSize="12dp"
+			    	android:gravity="center_horizontal"
+			    	android:layout_marginTop="8dp"/>	 	    				    					
+	    	</RelativeLayout>    	
+	    	<RelativeLayout   
+	    		android:id="@+id/main_menu_reports"
+	    		android:layout_width="fill_parent" 
+	    		android:layout_height="45dp"
+	    		android:layout_below="@id/main_menu_money"
+	    		android:clickable="true"
+	    		android:background="@drawable/left_button_background">
+	    		<RelativeLayout 
+	    			android:id="@+id/main_menu_item_image4"
+	    			android:layout_width="40dp"
+	    			android:layout_height="fill_parent"
+	    			android:layout_alignParentRight="true"
+	    			android:background="@drawable/bg_red">       		   		
+		    		<ImageView 
+		    			android:layout_width="wrap_content"
+		    			android:layout_height="wrap_content"		    			
+		    			android:src="@drawable/ic_reports"
+		    			android:layout_centerInParent="true"/>    
+		    		</RelativeLayout>
+		    	<TextView
+			    	android:id = "@+id/main_menu_item_text4"
+			    	android:layout_width="fill_parent"
+			    	android:layout_height="wrap_content"
+			    	android:layout_toLeftOf="@id/main_menu_item_image4"		    	
+			    	android:layout_marginRight="5dp"
+			    	android:text="Generate \nReports"
+			    	android:textColor="#575757"
+			    	android:textSize="12dp"
+			    	android:gravity="center_horizontal"
+			    	android:layout_marginTop="8dp"/>	 	    	    				    					
+	    	</RelativeLayout> 
+	    	<RelativeLayout   
+	    		android:id="@+id/main_menu_shopping_list"
+	    		android:layout_width="fill_parent" 
+	    		android:layout_height="45dp"
+	    		android:layout_below="@id/main_menu_reports"
+	    		android:clickable="true"
+	    		android:background="@drawable/left_button_background">
+	    		<RelativeLayout 
+	    			android:id="@+id/main_menu_item_image5"
+	    			android:layout_width="40dp"
+	    			android:layout_height="fill_parent"
+	    			android:layout_alignParentRight="true"
+	    			android:background="@drawable/bg_purple">       		   		
+		    		<ImageView 
+		    			android:layout_width="wrap_content"
+		    			android:layout_height="wrap_content"
+		    			android:src="@drawable/ic_list"
+		    			android:layout_centerInParent="true"/>    
+		    		</RelativeLayout>
+		    	<TextView
+			    	android:id = "@+id/main_menu_item_text5"
+			    	android:layout_width="fill_parent"
+			    	android:layout_height="wrap_content"
+			    	android:layout_toLeftOf="@id/main_menu_item_image5"		    	
+			    	android:layout_marginRight="5dp"
+			    	android:text="Shopping \nLists"
+			    	android:textColor="#575757"
+			    	android:textSize="12dp"
+			    	android:gravity="center_horizontal"
+			    	android:layout_marginTop="8dp"/>	 	    	    				    					
+	    	</RelativeLayout>    	   	    	
+	    </RelativeLayout>    
+	   </ScrollView>	
 </RelativeLayout>
   

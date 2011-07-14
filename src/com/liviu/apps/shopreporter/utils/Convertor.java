@@ -4,6 +4,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.os.Bundle;
 
 import com.liviu.apps.shopreporter.data.Product;
@@ -54,6 +57,7 @@ public class Convertor {
 		
 		return b;
 	}
+	
 	public static String toString(Object obj){				
 		String data		= "";
 		Class<?> c 		= obj.getClass();				
@@ -62,30 +66,24 @@ public class Convertor {
 		
 		for(Field f : fields){
 			f.setAccessible(true);
-			Annotation[] annotations = f.getAnnotations();
-			for(Annotation a : annotations){
-				if(a instanceof BundleAnnotation){
-					BundleAnnotation annotation = (BundleAnnotation)a;	
-					try {													
-						if(f.getType().equals(String.class))
-							data += "\n" + f.getName() + ": " + ((String)f.get(obj));
-						else if(f.getType().equals(int.class) || f.getType().equals(Integer.class))
-							data += "\n" + f.getName() + ": " + f.getInt(obj);
-						else if(f.getType().equals(long.class) || f.getType().equals(Long.class))
-							data += "\n" + f.getName() + ": " + f.getLong(obj);
-						else if(f.getType().equals(Double.class) || f.getType().equals(double.class))
-							data += "\n" + f.getName() + ": " + f.getDouble(obj);
-						else if(f.getType().equals(Boolean.class) || f.getType().equals(boolean.class))
-							data += "\n" + f.getName() + ": " + f.getBoolean(obj);						
-					}
-					catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					}
-					catch (IllegalAccessException e) {
-						e.printStackTrace();
-					}						
-				}
+			try {													
+				if(f.getType().equals(String.class))
+					data += "\n" + f.getName() + ": " + ((String)f.get(obj));
+				else if(f.getType().equals(int.class) || f.getType().equals(Integer.class))
+					data += "\n" + f.getName() + ": " + f.getInt(obj);
+				else if(f.getType().equals(long.class) || f.getType().equals(Long.class))
+					data += "\n" + f.getName() + ": " + f.getLong(obj);
+				else if(f.getType().equals(Double.class) || f.getType().equals(double.class))
+					data += "\n" + f.getName() + ": " + f.getDouble(obj);
+				else if(f.getType().equals(Boolean.class) || f.getType().equals(boolean.class))
+					data += "\n" + f.getName() + ": " + f.getBoolean(obj);						
 			}
+			catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+			catch (IllegalAccessException e) {
+				e.printStackTrace();
+			}						
 		}
 		
 		return data;
@@ -123,4 +121,44 @@ public class Convertor {
 		}	
 		return null;
 	}
+	
+	public static JSONObject toJson(Object obj){				
+		String data		= "";
+		Class<?> c 		= obj.getClass();				
+		Field[] fields 	= c.getDeclaredFields();
+		data += "\n====== " + c.getName() + " ========= \n";
+		JSONObject json = new JSONObject();
+		
+		
+		for(Field f : fields){
+			f.setAccessible(true);
+			try {													
+				if(f.getType().equals(String.class))
+					json.put(f.getName(), (String)f.get(obj));							
+				else if(f.getType().equals(int.class) || f.getType().equals(Integer.class))
+					json.put(f.getName(), f.getInt(obj));
+				else if(f.getType().equals(long.class) || f.getType().equals(Long.class))
+					json.put(f.getName(), f.getLong(obj));
+				else if(f.getType().equals(Double.class) || f.getType().equals(double.class))
+					json.put(f.getName(), f.getDouble(obj));
+				else if(f.getType().equals(Boolean.class) || f.getType().equals(boolean.class))
+					json.put(f.getName(), f.getBoolean(obj));						
+			}
+			catch (IllegalArgumentException e) {
+				e.printStackTrace();
+				json = null;
+			}
+			catch (IllegalAccessException e) {
+				e.printStackTrace();
+				json = null;
+			} catch (JSONException e) {
+				e.printStackTrace();
+				json = null;
+			}													
+		}
+		
+		if(json != null)
+			Console.debug(TAG, json.toString());
+		return json;
+	}		
 }

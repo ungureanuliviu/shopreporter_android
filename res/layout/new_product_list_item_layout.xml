@@ -2,55 +2,51 @@
 <RelativeLayout
   xmlns:android="http://schemas.android.com/apk/res/android"   
   android:layout_width="fill_parent"
-  android:layout_height="45dp">
+  android:layout_height="50dp">
   <RelativeLayout 
   	android:id = "@+id/item_layout"
 	android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
-	android:clickable="true"
-	android:background="@drawable/bg_item_list_white" >
-	  <TextView
-	  	android:id = "@+id/item_index"
-	  	android:layout_width="wrap_content"
-	  	android:layout_height="wrap_content"
-	  	android:text = "1"
-	  	android:layout_alignParentLeft="true"
-	  	android:layout_centerVertical="true"  	
-	  	android:textColor="#575757"
-	  	android:layout_marginLeft="5dp"
-	  	android:textStyle="bold"
-	  	android:textSize = "20sp"/>
-	  <TextView
+	android:clickable="true" 		
+	android:layout_marginRight="5dp"
+	android:layout_marginLeft="5dp">
+	  <com.liviu.apps.shopreporter.ui.LTextView
 	  	android:id = "@+id/item_title"
 	  	android:layout_width="wrap_content"
 	  	android:layout_height="wrap_content"
 	  	android:text = "Milk"
-	  	android:layout_toRightOf="@id/item_index"  	
+	  	android:layout_alignParentLeft="true"
 	  	android:layout_marginTop="5dp"
 	  	android:textColor="#575757"
 	  	android:layout_marginLeft="5dp"
 	  	android:singleLine="true"
 	  	android:ellipsize="end"
 	  	android:textStyle="bold"
-	  	android:textSize = "16sp"/>  	
-	  <TextView
+	  	android:textSize = "18sp"/>  	
+	  <com.liviu.apps.shopreporter.ui.LTextView
 	  	android:id = "@+id/item_total"
 	  	android:layout_width="wrap_content"
 	  	android:layout_height="wrap_content"
 	  	android:text = "2 litre x $2.22 = $4.44"
-	  	android:layout_toRightOf="@id/item_index"
+	  	android:layout_alignParentLeft="true"
 	  	android:layout_below="@id/item_title"  	
 	  	android:textColor="#575757"
 	  	android:layout_marginLeft ="5dp"
 	  	android:textSize = "10sp"/> 
 	  <ImageButton 
 	  	android:id = "@+id/item_but_remove"
-	  	android:layout_width="wrap_content"
-	  	android:layout_height="wrap_content"
+	  	android:layout_width="60dp"
+	  	android:layout_height="40dp"
 	  	android:background="#00000000"
 	  	android:src="@drawable/ic_button_x_red"
 	  	android:layout_alignParentRight="true"
 	  	android:layout_centerVertical="true"
-	  	android:layout_marginRight="10dp"/> 	  
+	  	android:paddingLeft="25dp"	  	
+	  	android:layout_marginRight="1dp"/> 	  
+	  <View
+	  	android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:background="#bbbbbb"  
+		android:layout_alignParentBottom="true"/>
 	</RelativeLayout>	
 </RelativeLayout>

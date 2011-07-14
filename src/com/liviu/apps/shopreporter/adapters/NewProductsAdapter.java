@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.liviu.apps.shopreporter.R;
 import com.liviu.apps.shopreporter.data.Product;
 import com.liviu.apps.shopreporter.interfaces.OnItemActionListener;
+import com.liviu.apps.shopreporter.ui.LTextView;
 import com.liviu.apps.shopreporter.utils.Console;
 import com.liviu.apps.shopreporter.utils.Utils;
 
@@ -66,14 +66,10 @@ public class NewProductsAdapter extends BaseAdapter{
 		if(convertView == null){
 			convertView 	= (RelativeLayout)mInflater.inflate(com.liviu.apps.shopreporter.R.layout.new_product_list_item_layout, parent, false);
 			vh				= new ViewHolder();
-			vh.txt_index 	= (TextView)convertView.findViewById(R.id.item_index);
-			vh.txt_title	= (TextView)convertView.findViewById(R.id.item_title);
-			vh.txt_total 	= (TextView)convertView.findViewById(R.id.item_total);
+			vh.txt_title	= (LTextView)convertView.findViewById(R.id.item_title);
+			vh.txt_total 	= (LTextView)convertView.findViewById(R.id.item_total);
 			vh.but_remove	= (ImageButton)convertView.findViewById(R.id.item_but_remove);
-			vh.layout_holder= (RelativeLayout)convertView.findViewById(R.id.item_layout);
-						
-			vh.txt_index.setTypeface(mTypeface);
-			vh.txt_title.setTypeface(mTypeface);
+			vh.layout_holder= (RelativeLayout)convertView.findViewById(R.id.item_layout);								
 			
 			vh.but_remove.setOnClickListener(new OnClickListener() {				
 				@Override
@@ -104,22 +100,22 @@ public class NewProductsAdapter extends BaseAdapter{
 			vh = (ViewHolder)convertView.getTag();
 		
 		vh.but_remove.setTag(position);
-		vh.txt_index.setText(Integer.toString(position));
 		vh.txt_title.setText(mItems.get(position).getName());
 		vh.txt_total.setText(Double.toString(mItems.get(position).getQuantity()) + mItems.get(position).getUnit() + " x $" + Double.toString(mItems.get(position).getPrice()) + " = $" + Utils.roundTwoDecimals(mItems.get(position).getQuantity() * mItems.get(position).getPrice()));
 		
+		/*
 		if(position % 2 == 0)
 			vh.layout_holder.setBackgroundResource(R.drawable.bg_item_list_gray);
 		else
 			vh.layout_holder.setBackgroundResource(R.drawable.bg_item_list_white);
+		*/
 		
 		return convertView;
 	}
 	
-	private class ViewHolder{
-		public TextView			txt_index;
-		public TextView 		txt_title;
-		public TextView			txt_total;
+	private class ViewHolder{		
+		public LTextView 		txt_title;
+		public LTextView		txt_total;
 		public ImageButton		but_remove;
 		public RelativeLayout	layout_holder;
 	}
@@ -134,8 +130,11 @@ public class NewProductsAdapter extends BaseAdapter{
 			mItems.remove(index);
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
-		}
-		
+		}		
+	}
+
+	public void clear() {
+		mItems.clear();
 	}
 	
 }

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"   
+  android:layout_width="fill_parent"
+  android:layout_height="50dp">
+  <RelativeLayout 
+  	android:id = "@+id/item_layout"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:clickable="true" 		
+	android:layout_marginRight="5dp"
+	android:layout_marginLeft="5dp">
+	  <ImageView 
+	  	android:id = "@+id/q_image"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	android:src="@drawable/ic_list_done_green"
+	  	android:layout_alignParentLeft="true"
+	  	android:layout_marginLeft="5dp"
+	  	android:layout_centerVertical="true"/>
+	  <com.liviu.apps.shopreporter.ui.LTextView
+	  	android:id = "@+id/q_name"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	android:text = "Which session?"
+	  	android:layout_toRightOf="@id/q_image"
+	  	android:layout_marginTop="7dp"
+	  	android:textColor="#575757"
+	  	android:layout_marginLeft="5dp"
+	  	android:singleLine="true"
+	  	android:ellipsize="end"
+	  	android:textStyle="bold"
+	  	android:textSize = "12sp"/>  	
+	  <com.liviu.apps.shopreporter.ui.LTextView
+	  	android:id = "@+id/q_answer"
+	  	android:layout_width="wrap_content"
+	  	android:layout_height="wrap_content"
+	  	android:text = "Test session"
+	  	android:layout_toRightOf="@id/q_image"
+	  	android:layout_below="@id/q_name"  	
+	  	android:textColor="#575757"
+	  	android:layout_marginLeft ="5dp"
+	  	android:textSize = "17sp"/>
+	  <View
+	  	android:layout_width="fill_parent"
+		android:layout_height="1dp"
+		android:background="#bbbbbb"  
+		android:layout_alignParentBottom="true"/>
+	</RelativeLayout>	
+</RelativeLayout>

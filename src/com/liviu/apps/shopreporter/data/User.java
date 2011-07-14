@@ -262,7 +262,7 @@ public class User {
 			soul.setLoginStatus(false);
 	}
 	
-	public ArrayList<Session> getPausedSessions(){
-		return mShopMan.getPauseSessions(mId);
-	}
+	public Session getPausedSession(){
+		return mShopMan.getPauseSession(mId);
+	}	
 }
