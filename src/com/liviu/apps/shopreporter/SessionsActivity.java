@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.os.Bundle;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.liviu.apps.shopreporter.adapters.ShowSessionsAdapter;
@@ -16,6 +18,7 @@ import com.liviu.apps.shopreporter.data.Session;
 import com.liviu.apps.shopreporter.data.User;
 import com.liviu.apps.shopreporter.interfaces.SessionListener;
 import com.liviu.apps.shopreporter.managers.ActivityIdProvider;
+import com.liviu.apps.shopreporter.ui.DragAreaView;
 import com.liviu.apps.shopreporter.utils.Console;
 import com.liviu.apps.shopreporter.utils.Utils;
 
@@ -31,6 +34,8 @@ public class SessionsActivity extends Activity implements SessionListener{
 	
 	// UI
 	private ListView			lstView;
+	private DragAreaView		dragArea;
+	private Button				butReports;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +50,15 @@ public class SessionsActivity extends Activity implements SessionListener{
 		user	= User.getInstance(this);
 		lstView	= (ListView)findViewById(R.id.sessions_list);
 		adapter = new ShowSessionsAdapter(this);
+		dragArea = (DragAreaView)findViewById(R.id.drag_area);
+		butReports	= (Button)findViewById(R.id.but_report);
+		
+		Button b = new Button(this);
+		b.setText("test");
+		b.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT));
+		
+		dragArea.addView(b);
+		dragArea.setViewDropper(butReports);
 		
 		if(!user.isLoggedIn()){
 			Intent toLogin = new Intent(SessionsActivity.this, LoginActivity.class);
